@@ -5,8 +5,241 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ludo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Exit" Foreground="Black"/>
+                </MenuItem>
+
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Foreground="Black"/>
+                </MenuItem>
+            </Menu>
+        </Grid>
+
+
+        <Grid Grid.Row="1">
+            <Viewbox>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderBrush="Black" BorderThickness="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
+                       <Grid Height="660" Width="660" HorizontalAlignment="Center">
+                           <Grid.RowDefinitions>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                               <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                           <Grid Grid.Row="0" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="1" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="2" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="3" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="4">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="5">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="6">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                                   <ColumnDefinition Width="*"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+
+                           </Grid>
+
+                           <Grid Grid.Row="7" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+
+                           </Grid>
+
+                           <Grid Grid.Row="8" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="9" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+
+                           <Grid Grid.Row="10" HorizontalAlignment="Center">
+                               <Grid.ColumnDefinitions>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                               </Grid.ColumnDefinitions>
+                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+
+                    <Grid Grid.Column="1" Margin="20">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+                                <Button Margin="10" Height="30">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Restart Game"></Label>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+                    </Grid>
+                </Grid>
+            </Viewbox>
+        </Grid>
     </Grid>
 </Window>
