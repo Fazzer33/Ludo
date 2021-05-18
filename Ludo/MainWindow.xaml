@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ludo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        Title="MainWindow" Height="850" Width="850">
+
+    <Window.Resources>
+        <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"></local:FieldTypeToColorConverter>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,7 +39,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Border BorderBrush="Black" BorderThickness="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20">
-                       <Grid Height="660" Width="660" HorizontalAlignment="Center">
+                       <Grid Height="660" Width="700" HorizontalAlignment="Center">
                            <Grid.RowDefinitions>
                                <RowDefinition Height="*"></RowDefinition>
                                <RowDefinition Height="*"></RowDefinition>
@@ -51,46 +56,46 @@
 
                            <Grid Grid.Row="0" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[0][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[0][1]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[0][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="1" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[1][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[1][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[1][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="2" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[2][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[2][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[2][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="3" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                   <ColumnDefinition Width="64"></ColumnDefinition>
+                                   <ColumnDefinition Width="64"></ColumnDefinition>
+                                   <ColumnDefinition Width="64"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[3][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[3][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[3][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="4">
@@ -107,17 +112,17 @@
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[4][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[4][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[4][2]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="3" DataContext="{Binding Cells[4][3]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="4" DataContext="{Binding Cells[4][4]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="5" DataContext="{Binding Cells[4][5]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="6" DataContext="{Binding Cells[4][6]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="7" DataContext="{Binding Cells[4][7]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="8" DataContext="{Binding Cells[4][8]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="9" DataContext="{Binding Cells[4][9]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="10" DataContext="{Binding Cells[4][10]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="5">
@@ -134,17 +139,17 @@
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[5][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[5][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[5][2]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="3" DataContext="{Binding Cells[5][3]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="4" DataContext="{Binding Cells[5][4]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="5" DataContext="{Binding Cells[5][5]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="6" DataContext="{Binding Cells[5][6]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="7" DataContext="{Binding Cells[5][7]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="8" DataContext="{Binding Cells[5][8]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="9" DataContext="{Binding Cells[5][9]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="10" DataContext="{Binding Cells[5][10]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="6">
@@ -161,63 +166,63 @@
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="3"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="4"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="5"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="6"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="7"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="8"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="9"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="10"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[6][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[6][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[6][2]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="3" DataContext="{Binding Cells[6][3]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="4" DataContext="{Binding Cells[6][4]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="5" DataContext="{Binding Cells[6][5]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="6" DataContext="{Binding Cells[6][6]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="7" DataContext="{Binding Cells[6][7]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="8" DataContext="{Binding Cells[6][8]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="9" DataContext="{Binding Cells[6][9]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="10" DataContext="{Binding Cells[6][10]}"></local:LudoGridCell>
 
                            </Grid>
 
                            <Grid Grid.Row="7" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[7][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[7][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[7][2]}"></local:LudoGridCell>
 
                            </Grid>
 
                            <Grid Grid.Row="8" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[8][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[8][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[8][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="9" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[9][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[9][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[9][2]}"></local:LudoGridCell>
                             </Grid>
 
                            <Grid Grid.Row="10" HorizontalAlignment="Center">
                                <Grid.ColumnDefinitions>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
-                                   <ColumnDefinition Width="66"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
+                                    <ColumnDefinition Width="64"></ColumnDefinition>
                                </Grid.ColumnDefinitions>
-                               <local:LudoGridCell Grid.Column="0"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="1"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="2"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="0" DataContext="{Binding Cells[10][0]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="1" DataContext="{Binding Cells[10][1]}"></local:LudoGridCell>
+                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[10][2]}"></local:LudoGridCell>
                             </Grid>
                         </Grid>
                     </Border>

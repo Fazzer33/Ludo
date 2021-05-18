@@ -6,9 +6,23 @@
              xmlns:local="clr-namespace:Ludo"
              mc:Ignorable="d" 
              d:DesignHeight="66" d:DesignWidth="66">
+
+    <UserControl.Resources>
+        <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Border BorderBrush="Black">
-           <Grid Background="Chocolate"></Grid>
+           <Grid>
+               <Ellipse>
+                   <Ellipse.Style>
+                       <Style TargetType="{x:Type Ellipse}">
+                           <Setter Property="Fill" Value="{Binding ColorType, Converter={StaticResource FieldTypeToColorConverter}}"></Setter>
+                           <Setter Property="Stroke" Value="Black"></Setter>
+                            <Setter Property="Margin" Value="5px"></Setter>
+                        </Style>
+                    </Ellipse.Style>
+               </Ellipse>
+           </Grid>
         </Border>
     </Grid>
 </UserControl>

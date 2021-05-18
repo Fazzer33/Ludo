@@ -55,6 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CellId.cs" />
+    <Compile Include="CellStatusViewModel.cs" />
+    <Compile Include="ICellStatusViewModel.cs" />
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Types.cs" />
     <Page Include="LudoGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -67,6 +73,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FieldTypeToColorConverter.cs" />
     <Compile Include="LudoGridCell.xaml.cs">
       <DependentUpon>LudoGridCell.xaml</DependentUpon>
     </Compile>

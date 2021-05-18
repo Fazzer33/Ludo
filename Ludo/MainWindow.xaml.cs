@@ -22,6 +22,8 @@ namespace Ludo
     {
         public MainWindow()
         {
+            MainViewModel mvm = new MainViewModel();
+            DataContext = mvm;
             InitializeComponent();
         }
     }
