@@ -168,7 +168,6 @@
                                 <local:LudoGridCell Grid.Column="2" DataContext="{Binding Cells[5][2]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="3" DataContext="{Binding Cells[5][3]}"></local:LudoGridCell>
                                 <local:LudoGridCell Grid.Column="4" DataContext="{Binding Cells[5][4]}"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="5" DataContext="{Binding Cells[5][5]}"></local:LudoGridCell>
                                 <local:LudoGridCell Grid.Column="6" DataContext="{Binding Cells[5][6]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="7" DataContext="{Binding Cells[5][7]}"></local:LudoGridCell>
                                 <local:LudoGridCell Grid.Column="8" DataContext="{Binding Cells[5][8]}"></local:LudoGridCell>

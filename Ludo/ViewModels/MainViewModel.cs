@@ -135,7 +135,7 @@ namespace Ludo
                             fieldType = EFieldType.Finish;
                             fieldColor = EFieldColor.FieldRed;
                             figureColor = ELudoFigureColor.Empty;
-                        }
+                        } 
                         else if (i > 5 && i < 10)
                         {
                             fieldType = EFieldType.Finish;
