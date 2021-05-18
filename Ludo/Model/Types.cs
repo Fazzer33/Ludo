@@ -15,4 +15,13 @@
         Finish,
         Basic
     }
+
+    public enum ELudoFigureColor
+    {
+        Blue,
+        Red,
+        Green,
+        Yellow,
+        Empty
+    }
 }

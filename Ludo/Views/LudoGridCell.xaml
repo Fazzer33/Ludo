@@ -9,9 +9,10 @@
 
     <UserControl.Resources>
         <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"/>
+        <local:LudoFigureToImageConverter x:Key="LudoFigureToImageConverter"></local:LudoFigureToImageConverter>
     </UserControl.Resources>
     <Grid>
-        <Border BorderBrush="Black">
+        <Border>
            <Grid>
                <Ellipse>
                    <Ellipse.Style>
@@ -22,7 +23,9 @@
                         </Style>
                     </Ellipse.Style>
                </Ellipse>
-           </Grid>
+
+                <Image Height="50" Width="50" Source="{Binding LudoFigureColor, Converter={StaticResource LudoFigureToImageConverter}}"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
