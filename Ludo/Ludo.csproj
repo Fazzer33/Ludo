@@ -71,11 +71,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\CellId.cs" />
+    <Compile Include="Model\Types.cs" />
     <Compile Include="ViewModels\CellStatusViewModel.cs" />
     <Compile Include="ViewModels\ICellStatusViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Model\Types.cs" />
     <Page Include="Views\LudoGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,12 +93,20 @@
     <Compile Include="Views\LudoGridCell.xaml.cs">
       <DependentUpon>LudoGridCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Events\CellStatusChangedEventArgs.cs" />
+    <Compile Include="Events\GameEndedEventArgs.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\CellModel.cs" />
+    <Compile Include="Model\GameLogic.cs" />
+    <Compile Include="Model\IDice.cs" />
+    <Compile Include="Model\IGameLogic.cs" />
+    <Compile Include="Model\Pawn.cs" />
+    <Compile Include="Model\PawnId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ludo
 {
-    public enum EFieldColor
+    public enum FieldColor
     {
         FieldBlue,
         FieldRed,
@@ -15,28 +15,10 @@ namespace Ludo
         FieldYellow,
         FieldBasic
     }
-
-    public enum EFieldType
-    {
-        Home,
-        Finish,
-        Basic
-    }
-
-    public enum ELudoFigureColor
-    {
-        Blue,
-        Red,
-        Green,
-        Yellow,
-        Empty
-    }
 }
 
 namespace Ludo.Model
 {
- 
-
     public enum EPlayerColor
     {
         Red,
@@ -51,5 +33,4 @@ namespace Ludo.Model
         InGame,
         Finish
     }
-  
 }
