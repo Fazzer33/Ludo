@@ -3,6 +3,5 @@
     public interface IDice
     {
         int Role();
-
     }
 }

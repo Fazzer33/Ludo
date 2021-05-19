@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\Dice.cs" />
     <Compile Include="Model\CellId.cs" />
     <Compile Include="Model\Types.cs" />
     <Compile Include="ViewModels\CellStatusViewModel.cs" />
@@ -102,9 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\CellModel.cs" />
-    <Compile Include="Model\GameLogic.cs" />
-    <Compile Include="Model\IDice.cs" />
-    <Compile Include="Model\IGameLogic.cs" />
+    <Compile Include="Logic\GameLogic.cs" />
+    <Compile Include="Logic\IDice.cs" />
+    <Compile Include="Logic\IGameLogic.cs" />
     <Compile Include="Model\Pawn.cs" />
     <Compile Include="Model\PawnId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -49,7 +49,7 @@ namespace Ludo.Model
     {
         Start,
         InGame,
-        Finish
+        Finished
     }
   
 }

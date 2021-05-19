@@ -12,9 +12,15 @@ namespace Ludo.Model
     {
 
         private readonly int diceNumberMoveToStart = 6;
-        private readonly int numberOfCellsInGame = 40;
-        private readonly int numberOfPawnsPerPlayer = 4;
 
+        public int NumberOfCellsInGame
+        {
+            get {return 40; }
+        } 
+        private int NumberOfPawnsPerPlayer 
+        {
+            get {return 4;}
+        }
 
         //Events to be used with ViewModel
         public event EventHandler<GameEndedEventArgs> GameFinishedEvent = delegate { };
@@ -26,7 +32,6 @@ namespace Ludo.Model
         private List<EPlayerColor> _playersInGame;
         private EPlayerColor _currentPlayer;
         private List<CellModel> _cells;
-
 
 
 
@@ -49,7 +54,7 @@ namespace Ludo.Model
             foreach (EPlayerColor color in _playersInGame)
             {
                 List<Pawn> pawnsForPlayer = new List<Pawn>();
-                for (int i = 0; i < numberOfPawnsPerPlayer; i++)
+                for (int i = 0; i < NumberOfPawnsPerPlayer; i++)
                 {
                     pawnsForPlayer.Add(new Pawn(new PawnId(color, i)));
                 }
@@ -61,7 +66,7 @@ namespace Ludo.Model
         private void InitializeCells()
         {
             _cells = new List<CellModel>();
-            for (int i = 0; i < numberOfCellsInGame; i++)
+            for (int i = 0; i < NumberOfCellsInGame; i++)
             {
                 _cells.Add(new CellModel(i));
             }
@@ -78,7 +83,7 @@ namespace Ludo.Model
 
         private int DetermineNextCellId(int cellIndexOfPawn, int diceResult)
         {
-            return (cellIndexOfPawn + diceResult) % numberOfCellsInGame;
+            return (cellIndexOfPawn + diceResult) % NumberOfCellsInGame;
         }
 
         private bool CheckIfPawnDidAllRound(Pawn pawn, int nextCellIndex)
@@ -116,7 +121,7 @@ namespace Ludo.Model
                 }
 
                 //Find if on nextCell is another pawn;
-                Pawn pawnsOnNextCell = findPawnOnCell(nextCellId);
+                Pawn pawnsOnNextCell = FindPawnOnCell(nextCellId);
                 if (pawnsOnNextCell?.Id.Color == _currentPlayer)
                 {
                     continue;
@@ -126,7 +131,17 @@ namespace Ludo.Model
             return possiblePawnsToMove;
         }
 
-
+        private void CheckIfFinished()
+        {
+            foreach (EPlayerColor color in _playersInGame)
+            {
+                List<Pawn> pawnsForPlayer = _pawns[color];
+                if (pawnsForPlayer.All(p => p.State == EPawnState.Finished))
+                {
+                    GameFinishedEvent(this, new GameEndedEventArgs());
+                }
+            }
+        }
 
 
         public void MovePiece(PawnId pawn, int diceResult)
@@ -135,7 +150,7 @@ namespace Ludo.Model
             var validMoves = ValidMoves(diceResult);
             if (validMoves.Any(x => x.Equals(pawn)))
             {
-                Pawn toMove = findPawnWithPawnId(pawn);
+                Pawn toMove = FindPawnWithPawnId(pawn);
                 if (toMove.State == EPawnState.Start)
                 {
                     toMove.MoveToStart(_cells[CellModel.GetStartCellIndexForPlayer(toMove.Id.Color)]);
@@ -153,18 +168,21 @@ namespace Ludo.Model
                         toMove.MovePawn(_cells[newCellIndex]);
                     }
                 }
+
+                CheckIfFinished();
             }
             setNextPlayer();
+
         }
 
 
-        private Pawn findPawnWithPawnId(PawnId id)
+        private Pawn FindPawnWithPawnId(PawnId id)
         {
             return _pawns.Values.SelectMany(x => x).Where(x => x.Id.Equals(id)).ToList()[0];
         }
 
 
-        private Pawn findPawnOnCell(int cellId)
+        private Pawn FindPawnOnCell(int cellId)
         {
             List<Pawn> allPawns = _pawns.Values.SelectMany(x => x).Where(x => x.State == EPawnState.InGame).Where(x => x.Cell.CellIndex == cellId).ToList();
             if (allPawns.Count == 1)

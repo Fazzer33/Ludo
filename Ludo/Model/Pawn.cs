@@ -18,7 +18,6 @@
         }
 
 
-
         private CellModel _cell = null;
 
         public CellModel Cell
@@ -39,7 +38,7 @@
         {
             _cell.PawnInCell = null;
             _cell = null;
-            _state = EPawnState.Finish;
+            _state = EPawnState.Finished;
         }
 
         public void MovePawn(CellModel cell)
