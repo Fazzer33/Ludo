@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ludo.Model;
 
 namespace Ludo
 {
@@ -22,7 +23,9 @@ namespace Ludo
     {
         public MainWindow()
         {
-            MainViewModel mvm = new MainViewModel();
+            GameLogic gameLogic = new GameLogic();
+
+            MainViewModel mvm = new MainViewModel(gameLogic);
             DataContext = mvm;
             InitializeComponent();
         }

@@ -8,7 +8,7 @@
         Title="MainWindow" Height="850" Width="850">
 
     <Window.Resources>
-        <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"></local:FieldTypeToColorConverter>
+        <local:NumberToDiceImageConverter x:Key="NumberToDiceImageConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -194,8 +194,8 @@
                                <local:LudoGridCell Grid.Column="2" DataContext="{Binding InGameCells[28]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="3" DataContext="{Binding InGameCells[27]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="4" DataContext="{Binding InGameCells[26]}"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="5" DataContext="{Binding InFinishCells[3]}"></local:LudoGridCell>
-                               <local:LudoGridCell Grid.Column="6" DataContext="{Binding InGameCells[16]}"></local:LudoGridCell>
+                               <local:LudoGridCell Grid.Column="5" DataContext="{Binding InFinishCells[3]}"/>
+                                <local:LudoGridCell Grid.Column="6" DataContext="{Binding InGameCells[16]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="7" DataContext="{Binding InGameCells[15]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="8" DataContext="{Binding InGameCells[14]}"></local:LudoGridCell>
                                <local:LudoGridCell Grid.Column="9" DataContext="{Binding InGameCells[13]}"></local:LudoGridCell>
@@ -278,12 +278,21 @@
                     <Grid Grid.Column="1" Margin="20">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-
+                                <Button Margin="10" Height="30" Command="{Binding RollDiceCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Height="20" Source="../Dices/Six.png"></Image>
+                                        <Label Content="Roll Dice"></Label>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <Image Margin="20, 90" Height="70" Width="70" Source="{Binding RolledNumber, Converter={StaticResource NumberToDiceImageConverter}}"/>
                             </StackPanel>
 
                             <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-                                <Button Margin="10" Height="30">
+                                <Button Margin="10" Height="30" Command="{Binding RestartGameCommand}">
                                     <StackPanel Orientation="Horizontal">
+                                        <Image Source="../Figures/red.png"></Image>
                                         <Label Content="Restart Game"></Label>
                                     </StackPanel>
                                 </Button>

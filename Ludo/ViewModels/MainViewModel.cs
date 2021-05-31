@@ -1,12 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ludo.Annotations;
+using Ludo.Logic;
+using Ludo.Model;
 
 namespace Ludo
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly IGameLogic _gameLogic;
+        private readonly IDice _dice;
+
+        private EPlayerColor _currentPlayer = EPlayerColor.Red;
+        public EPlayerColor CurrentPlayer
+        {
+            get { return _currentPlayer;  }
+            set
+            {
+                _currentPlayer = value;
+                OnPropertyChanged(nameof(CurrentPlayer));
+            }
+        }
+
+        private int _rolledNumber = 6;
+
+        public int RolledNumber
+        {
+            get { return _rolledNumber; }
+            set
+            {
+                _rolledNumber = value;
+                OnPropertyChanged(nameof(RolledNumber));
+            }
+        }
 
         private readonly List<CellStatusViewModel> _inGameCells = new List<CellStatusViewModel>();
 
@@ -32,6 +60,20 @@ namespace Ludo
         private List<ELudoFigureColor> _players = new List<ELudoFigureColor>()
             {ELudoFigureColor.Red, ELudoFigureColor.Blue, ELudoFigureColor.Green, ELudoFigureColor.Yellow};
 
+        public RelayCommand RollDiceCommand { get; }
+        public RelayCommand RestartGameCommand { get; }
+
+        private void RollDiceCommandHandle(object obj)
+        {
+            RolledNumber = _dice.Role();
+            Console.WriteLine(RolledNumber);
+        }
+
+        private void RestartGameCommandHandle(object obj)
+        {
+            // restart game
+            Console.WriteLine("Restart game");
+        }
 
         public void SetupInGameCells()
         {
@@ -145,8 +187,15 @@ namespace Ludo
             SetupInFinishCells();
         }
 
-        public MainViewModel()
+        public MainViewModel(IGameLogic gameLogic)
         {
+            RestartGameCommand = new RelayCommand(RestartGameCommandHandle, (e) => true);
+            RollDiceCommand = new RelayCommand(RollDiceCommandHandle, (e) => true);
+
+            _dice = new Dice(1, 6);
+
+            _gameLogic = gameLogic;
+            _gameLogic.InitializeGame(new List<EPlayerColor>() { EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Red, EPlayerColor.Yellow });
             SetupCellStatusViewModels(11);
         }
 

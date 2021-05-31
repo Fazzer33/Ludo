@@ -78,6 +78,7 @@
     <Compile Include="ViewModels\InStartCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Views\NumberToDiceImageConverter.cs" />
     <Page Include="Views\LudoGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,6 +91,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\FieldTypeToColorConverter.cs" />
     <Compile Include="Views\LudoFigureToImageConverter.cs" />
     <Compile Include="Views\LudoGridCell.xaml.cs">
@@ -138,6 +140,24 @@
     <Folder Include="LudoLogic\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dices\Five.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dices\Four.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dices\One.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dices\Six.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dices\Three.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dices\Two.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Figures\red.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

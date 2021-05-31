@@ -24,9 +24,7 @@ namespace Ludo.Model
 
         //Events to be used with ViewModel
         public event EventHandler<GameEndedEventArgs> GameFinishedEvent = delegate { };
-        public event EventHandler<CellStatusChangedEventArgs> CellStatusChangedEvent = delegate
-        {
-        };
+        public event EventHandler<CellStatusChangedEventArgs> CellStatusChangedEvent = delegate { };
 
         private Dictionary<EPlayerColor, List<Pawn>> _pawns;
         private List<EPlayerColor> _playersInGame;
