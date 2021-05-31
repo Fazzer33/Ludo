@@ -13,8 +13,8 @@ namespace Ludo
         private readonly IGameLogic _gameLogic;
         private readonly IDice _dice;
 
-        private EPlayerColor _currentPlayer = EPlayerColor.Red;
-        public EPlayerColor CurrentPlayer
+        private ELudoFigureColor _currentPlayer = ELudoFigureColor.Red;
+        public ELudoFigureColor CurrentPlayer
         {
             get { return _currentPlayer;  }
             set
@@ -66,7 +66,8 @@ namespace Ludo
         private void RollDiceCommandHandle(object obj)
         {
             RolledNumber = _dice.Role();
-            Console.WriteLine(RolledNumber);
+            // TODO: Choose piece, then let it move (changes current player and set current player to mainviewmodel
+            CurrentPlayer = ELudoFigureColor.Blue;
         }
 
         private void RestartGameCommandHandle(object obj)
