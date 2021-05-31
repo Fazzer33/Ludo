@@ -4,8 +4,9 @@ using Ludo.Annotations;
 
 namespace Ludo
 {
-    public class CellStatusViewModel : ICellStatusViewModel
+    public class InStartCellViewModel
     {
+
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         [NotifyPropertyChangedInvocator]
@@ -41,19 +42,6 @@ namespace Ludo
             }
         }
 
-        public void SetFigure(ELudoFigureColor color)
-        {
-            LudoFigureColor = color;
-        }
-        
-        private int _index;
 
-        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, ELudoFigureColor figureColor)
-        {
-            _index = index;
-            _fieldType = fieldType;
-            _colorType = fieldColor;
-            _ludoFigureColor = figureColor;
-        }
     }
 }

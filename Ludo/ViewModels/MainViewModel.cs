@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
-using System.Windows.Documents;
 using Ludo.Annotations;
 
 namespace Ludo
@@ -11,248 +8,141 @@ namespace Ludo
     public class MainViewModel : INotifyPropertyChanged
     {
 
-        private readonly List<List<CellStatusViewModel>> _cells = new List<List<CellStatusViewModel>>();
+        private readonly List<CellStatusViewModel> _inGameCells = new List<CellStatusViewModel>();
 
-        public List<List<CellStatusViewModel>> Cells
+        public List<CellStatusViewModel> InGameCells
         {
-            get { return _cells;  }
+            get { return _inGameCells;  }
         }
+
+        private readonly Dictionary<ELudoFigureColor, CellStatusViewModel> _inStartCells = new Dictionary<ELudoFigureColor, CellStatusViewModel>();
+
+        public Dictionary<ELudoFigureColor, CellStatusViewModel> InStartCells
+        {
+            get { return _inStartCells;  }
+        }
+
+        private readonly Dictionary<ELudoFigureColor, CellStatusViewModel> _inFinishCells = new Dictionary<ELudoFigureColor, CellStatusViewModel>();
+
+        public Dictionary<ELudoFigureColor, CellStatusViewModel> InFinishCells
+        {
+            get { return _inFinishCells; }
+        }
+
+        private List<ELudoFigureColor> _players = new List<ELudoFigureColor>()
+            {ELudoFigureColor.Red, ELudoFigureColor.Blue, ELudoFigureColor.Green, ELudoFigureColor.Yellow};
+
+
+        public void SetupInGameCells()
+        {
+            EFieldColor fieldColor;
+            EFieldType fieldType;
+            ELudoFigureColor figureColor;
+            for (int i = 0; i < 40; i++)
+            {
+                if (i == 2)
+                {
+                    fieldType = EFieldType.Home;
+                    fieldColor = EFieldColor.FieldBlue;
+                    figureColor = ELudoFigureColor.Empty;
+                } else if (i == 12)
+                {
+                    fieldType = EFieldType.Home;
+                    fieldColor = EFieldColor.FieldGreen;
+                    figureColor = ELudoFigureColor.Empty;
+                } else if (i == 22)
+                {
+                    fieldType = EFieldType.Home;
+                    fieldColor = EFieldColor.FieldYellow;
+                    figureColor = ELudoFigureColor.Empty;
+                } else if (i == 32)
+                {
+                    fieldType = EFieldType.Home;
+                    fieldColor = EFieldColor.FieldRed;
+                    figureColor = ELudoFigureColor.Empty;
+                }
+                else
+                {
+                    fieldType = EFieldType.Basic;
+                    fieldColor = EFieldColor.FieldBasic;
+                    figureColor = ELudoFigureColor.Empty;
+                }
+
+                var cell = new CellStatusViewModel(i, fieldType, fieldColor, figureColor);
+                InGameCells.Add(cell);
+            }
+        }
+
+        public void SetupInStartCells()
+        {
+            EFieldColor fieldColor;
+            EFieldType fieldType;
+            int index = 0;
+            foreach (var color in _players)
+            {
+                fieldType = EFieldType.Home;
+                if (color.Equals(ELudoFigureColor.Red))
+                {
+                    fieldColor = EFieldColor.FieldRed;
+                } else if (color.Equals(ELudoFigureColor.Blue))
+                {
+                    fieldColor = EFieldColor.FieldBlue;
+                }
+                else if (color.Equals(ELudoFigureColor.Yellow))
+                {
+                    fieldColor = EFieldColor.FieldYellow;
+                }
+                else 
+                {
+                    fieldColor = EFieldColor.FieldGreen;
+                }
+                
+                var cell = new CellStatusViewModel(index, fieldType, fieldColor, color);
+                _inStartCells.Add(color, cell);
+                index++;
+            }
+        }
+
+        public void SetupInFinishCells()
+        {
+            EFieldColor fieldColor;
+            EFieldType fieldType;
+            ELudoFigureColor figureColor;
+            int index = 0;
+            foreach (var color in _players)
+            {
+                fieldType = EFieldType.Finish;
+                if (color.Equals(ELudoFigureColor.Red))
+                {
+                    fieldColor = EFieldColor.FieldRed;
+                }
+                else if (color.Equals(ELudoFigureColor.Blue))
+                {
+                    fieldColor = EFieldColor.FieldBlue;
+                }
+                else if (color.Equals(ELudoFigureColor.Yellow))
+                {
+                    fieldColor = EFieldColor.FieldYellow;
+                }
+                else
+                {
+                    fieldColor = EFieldColor.FieldGreen;
+                }
+
+                figureColor = ELudoFigureColor.Empty;
+
+                var cell = new CellStatusViewModel(index, fieldType, fieldColor, figureColor);
+                _inFinishCells.Add(color, cell);
+                index++;
+            }
+        }
+
 
         private void SetupCellStatusViewModels(int rows)
         {
-            for (int j = 0; j < rows; j++)
-            {
-                Cells.Add(new List<CellStatusViewModel>());
-                if (j == 0 || j == 1)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 0 || i == 1)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldRed;
-                            figureColor = ELudoFigureColor.Red;
-                        }
-                        else if (i == 6 && j == 0)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldBlue;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else if (i == 5 && j == 1)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldBlue;
-                            figureColor = ELudoFigureColor.Empty;
-                        } else if (i == 9 || i == 10)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldBlue;
-                            figureColor = ELudoFigureColor.Blue;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-
-                }
-
-                if (j > 1 && j < 4)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 1)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldBlue;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-                if (j == 4)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 0)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldRed;
-                            figureColor = ELudoFigureColor.Empty;
-                        } else if (i == 5)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldBlue;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-                if (j == 5)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i > 0 && i < 5)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldRed;
-                            figureColor = ELudoFigureColor.Empty;
-                        } 
-                        else if (i > 5 && i < 10)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldGreen;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-                if (j == 6)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 10)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldGreen;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else if (i == 5)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldYellow;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-                if (j > 6 && j < 9)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 1)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldYellow;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-                if (j == 9 || j == 10)
-                {
-                    for (int i = 0; i < 11; i++)
-                    {
-                        EFieldColor fieldColor;
-                        EFieldType fieldType;
-                        ELudoFigureColor figureColor;
-
-                        if (i == 0 || i == 1)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldYellow;
-                            figureColor = ELudoFigureColor.Yellow;
-                        }
-                        else if (i == 4 && j == 10)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldYellow;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else if (i == 5 && j == 9)
-                        {
-                            fieldType = EFieldType.Finish;
-                            fieldColor = EFieldColor.FieldYellow;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        else if (i == 9 || i == 10)
-                        {
-                            fieldType = EFieldType.Home;
-                            fieldColor = EFieldColor.FieldGreen;
-                            figureColor = ELudoFigureColor.Green;
-                        }
-                        else
-                        {
-                            fieldType = EFieldType.Basic;
-                            fieldColor = EFieldColor.FieldBasic;
-                            figureColor = ELudoFigureColor.Empty;
-                        }
-                        var cell = new CellStatusViewModel(j, i, fieldType, fieldColor, figureColor);
-                        Cells[j].Add(cell);
-                    }
-                }
-
-            }
+            SetupInGameCells();
+            SetupInStartCells();
+            SetupInFinishCells();
         }
 
         public MainViewModel()
