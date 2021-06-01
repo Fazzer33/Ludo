@@ -31,7 +31,10 @@ namespace Ludo.Model
         private EPlayerColor _currentPlayer;
         private List<CellModel> _cells;
 
-
+        public EPlayerColor CurrentPlayer
+        {
+            get { return _currentPlayer; }
+        }
 
         public GameLogic()
         {
@@ -41,7 +44,9 @@ namespace Ludo.Model
 
         private void setNextPlayer()
         {
+            Console.WriteLine("in next player");
             int index = _playersInGame.IndexOf(_currentPlayer);
+            Console.WriteLine("Logic player: " +_playersInGame[(index + 1) % _playersInGame.Count]);
             _currentPlayer = _playersInGame[(index + 1) % _playersInGame.Count];
         }
 
@@ -74,6 +79,7 @@ namespace Ludo.Model
         {
             _playersInGame = players;
             _currentPlayer = players[0];
+            Console.WriteLine("Current player: "+_currentPlayer);
 
             InitializePawns();
             InitializeCells();
@@ -144,7 +150,7 @@ namespace Ludo.Model
 
         public void MovePiece(PawnId pawn, int diceResult)
         {
-            //Add somewhere events so the piece waas mvoed
+            //Add somewhere events so the piece was moved
             var validMoves = ValidMoves(diceResult);
             if (validMoves.Any(x => x.Equals(pawn)))
             {

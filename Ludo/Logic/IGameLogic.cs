@@ -15,6 +15,8 @@ namespace Ludo.Model
 
         void InitializeGame(List<EPlayerColor> players);
 
+        EPlayerColor CurrentPlayer { get;  }
+
         string ToString();
     }
 }

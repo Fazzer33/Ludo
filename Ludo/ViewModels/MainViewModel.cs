@@ -13,8 +13,8 @@ namespace Ludo
         private readonly IGameLogic _gameLogic;
         private readonly IDice _dice;
 
-        private ELudoFigureColor _currentPlayer = ELudoFigureColor.Red;
-        public ELudoFigureColor CurrentPlayer
+        private EPlayerColor _currentPlayer;
+        public EPlayerColor CurrentPlayer
         {
             get { return _currentPlayer;  }
             set
@@ -67,7 +67,8 @@ namespace Ludo
         {
             RolledNumber = _dice.Role();
             // TODO: Choose piece, then let it move (changes current player and set current player to mainviewmodel
-            CurrentPlayer = ELudoFigureColor.Blue;
+            _gameLogic.MovePiece(new PawnId(EPlayerColor.Red, 1), RolledNumber);
+            CurrentPlayer = _gameLogic.CurrentPlayer;
         }
 
         private void RestartGameCommandHandle(object obj)
@@ -196,7 +197,8 @@ namespace Ludo
             _dice = new Dice(1, 6);
 
             _gameLogic = gameLogic;
-            _gameLogic.InitializeGame(new List<EPlayerColor>() { EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Red, EPlayerColor.Yellow });
+            _gameLogic.InitializeGame(new List<EPlayerColor>() { EPlayerColor.Red, EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Yellow });
+            _currentPlayer = _gameLogic.CurrentPlayer;
             SetupCellStatusViewModels(11);
         }
 
