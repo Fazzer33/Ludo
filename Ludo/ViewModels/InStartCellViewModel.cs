@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ludo.Annotations;
+using Ludo.Model;
 
 namespace Ludo
 {
@@ -28,16 +29,16 @@ namespace Ludo
             get { return _fieldType; }
         }
 
-        private ELudoFigureColor _ludoFigureColor = ELudoFigureColor.Empty;
-        public ELudoFigureColor LudoFigureColor
+        private EPlayerColor _playerColor = EPlayerColor.Empty;
+        public EPlayerColor PlayerColor
         {
-            get { return _ludoFigureColor; }
+            get { return _playerColor; }
             private set
             {
-                if (_ludoFigureColor != value)
+                if (_playerColor != value)
                 {
-                    _ludoFigureColor = value;
-                    OnPropertyChanged(nameof(LudoFigureColor));
+                    _playerColor = value;
+                    OnPropertyChanged(nameof(PlayerColor));
                 }
             }
         }

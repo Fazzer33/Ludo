@@ -9,23 +9,33 @@
 
     <UserControl.Resources>
         <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"/>
-        <local:LudoFigureToImageConverter x:Key="LudoFigureToImageConverter"></local:LudoFigureToImageConverter>
+        <local:PlayerColorToImageConverter x:Key="PlayerColorToImageConverter"></local:PlayerColorToImageConverter>
     </UserControl.Resources>
     <Grid>
-        <Border>
-           <Grid>
-               <Ellipse>
-                   <Ellipse.Style>
-                       <Style TargetType="{x:Type Ellipse}">
-                           <Setter Property="Fill" Value="{Binding ColorType, Converter={StaticResource FieldTypeToColorConverter}}"></Setter>
-                           <Setter Property="Stroke" Value="Black"></Setter>
-                            <Setter Property="Margin" Value="5px"></Setter>
-                        </Style>
-                    </Ellipse.Style>
-               </Ellipse>
-
-                <Image Height="50" Width="50" Source="{Binding LudoFigureColor, Converter={StaticResource LudoFigureToImageConverter}}"/>
+        <Border CornerRadius="55" >
+            <Grid>
+            <Ellipse>
+            <Ellipse.Style>
+                <Style TargetType="{x:Type Ellipse}">
+                    
+                    <Setter Property="Fill" Value="{Binding ColorType, Converter={StaticResource FieldTypeToColorConverter}}"></Setter>
+                    <Setter Property="Stroke" Value="Black"></Setter>
+                    <Setter Property="Margin" Value="5px"></Setter>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+                <Image Height="50" Width="50" Source="{Binding PlayerColor, Converter={StaticResource PlayerColorToImageConverter}}"/>
             </Grid>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value= "HotPink"/>
+
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
         </Border>
     </Grid>
 </UserControl>

@@ -23,14 +23,6 @@ namespace Ludo
         Basic
     }
 
-    public enum ELudoFigureColor
-    {
-        Blue,
-        Red,
-        Green,
-        Yellow,
-        Empty
-    }
 }
 
 namespace Ludo.Model
@@ -42,7 +34,8 @@ namespace Ludo.Model
         Red,
         Blue,
         Green,
-        Yellow
+        Yellow,
+        Empty
     }
 
     public enum EPawnState

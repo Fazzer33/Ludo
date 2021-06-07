@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ludo.Annotations;
+using Ludo.Model;
 
 namespace Ludo
 {
@@ -13,6 +15,8 @@ namespace Ludo
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public event EventHandler<CellId> CellSelected = delegate { };
 
         private readonly EFieldColor _colorType;
 
@@ -27,33 +31,102 @@ namespace Ludo
             get { return _fieldType; }
         }
 
-        private ELudoFigureColor _ludoFigureColor = ELudoFigureColor.Empty;
-        public ELudoFigureColor LudoFigureColor
+        private EPlayerColor _playerColor = EPlayerColor.Empty;
+        public EPlayerColor PlayerColor
         {
-            get { return _ludoFigureColor; }
+            get { return _playerColor; }
             private set
             {
-                if (_ludoFigureColor != value)
+                if (_playerColor != value)
                 {
-                    _ludoFigureColor = value;
-                    OnPropertyChanged(nameof(LudoFigureColor));
+                    _playerColor = value;
+                    OnPropertyChanged(nameof(PlayerColor));
                 }
             }
         }
 
-        public void SetFigure(ELudoFigureColor color)
+        private PawnId _pawnId;
+
+        public PawnId PawnId
         {
-            LudoFigureColor = color;
+            get { return _pawnId; }
+            private set
+            {
+                if (_pawnId != value)
+                {
+                    _pawnId = value;
+                    OnPropertyChanged(nameof(PawnId));
+                }
+            }
         }
-        
+
+        private bool _isCellSelected = false;
+        public bool IsCellSelected
+        {
+            get { return _isCellSelected; }
+            set
+            {
+                if (_isCellSelected != value)
+                {
+                    _isCellSelected = value;
+                    OnPropertyChanged(nameof(IsCellSelected));
+                }
+            }
+        }
+
+        private bool _isValidMoveTarget = false;
+        public bool IsValidMoveTarget
+        {
+            get { return _isValidMoveTarget; }
+            set
+            {
+                if (_isValidMoveTarget != value)
+                {
+                    _isValidMoveTarget = value;
+                    OnPropertyChanged(nameof(IsValidMoveTarget));
+                }
+            }
+        }
+
+        public void SetPawn(PawnId pawn)
+        {
+            PawnId = pawn;
+        }
+
+        private RelayCommand _cellSelectedCommand = null;
+        public RelayCommand CellSelectedCommand
+        {
+            get
+            {
+                return _cellSelectedCommand ??
+                       (_cellSelectedCommand = new RelayCommand(
+                           (x) =>
+                           {
+                               CellSelected(this, CellId.Create(_index));
+
+                           }, // Execute
+                           (x) => { return true; } // CanExecute
+                       ));
+            }
+        }
+
         private int _index;
 
-        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, ELudoFigureColor figureColor)
+        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, EPlayerColor figureColor)
         {
             _index = index;
             _fieldType = fieldType;
             _colorType = fieldColor;
-            _ludoFigureColor = figureColor;
+            _playerColor = figureColor;
+        }
+
+        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, EPlayerColor figureColor, PawnId pawnId)
+        {
+            _index = index;
+            _fieldType = fieldType;
+            _colorType = fieldColor;
+            _playerColor = figureColor;
+            _pawnId = pawnId;
         }
     }
 }

@@ -25,6 +25,9 @@ namespace Ludo
                 case EPlayerColor.Yellow:
                     return new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "Figures/yellow.png",
                         UriKind.Absolute));
+                case EPlayerColor.Empty:
+                    return new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "Figures/empty.png",
+                        UriKind.Absolute));
                 default:
                     throw new ArgumentException("Not supported figure type.");
             }

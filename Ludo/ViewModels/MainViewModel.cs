@@ -43,22 +43,22 @@ namespace Ludo
             get { return _inGameCells;  }
         }
 
-        private readonly Dictionary<ELudoFigureColor, CellStatusViewModel> _inStartCells = new Dictionary<ELudoFigureColor, CellStatusViewModel>();
+        private readonly Dictionary<EPlayerColor, CellStatusViewModel> _inStartCells = new Dictionary<EPlayerColor, CellStatusViewModel>();
 
-        public Dictionary<ELudoFigureColor, CellStatusViewModel> InStartCells
+        public Dictionary<EPlayerColor, CellStatusViewModel> InStartCells
         {
             get { return _inStartCells;  }
         }
 
-        private readonly Dictionary<ELudoFigureColor, CellStatusViewModel> _inFinishCells = new Dictionary<ELudoFigureColor, CellStatusViewModel>();
+        private readonly Dictionary<EPlayerColor, CellStatusViewModel> _inFinishCells = new Dictionary<EPlayerColor, CellStatusViewModel>();
 
-        public Dictionary<ELudoFigureColor, CellStatusViewModel> InFinishCells
+        public Dictionary<EPlayerColor, CellStatusViewModel> InFinishCells
         {
             get { return _inFinishCells; }
         }
 
-        private List<ELudoFigureColor> _players = new List<ELudoFigureColor>()
-            {ELudoFigureColor.Red, ELudoFigureColor.Blue, ELudoFigureColor.Green, ELudoFigureColor.Yellow};
+        private List<EPlayerColor> _players = new List<EPlayerColor>()
+            {EPlayerColor.Red, EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Yellow};
 
         public RelayCommand RollDiceCommand { get; }
         public RelayCommand RestartGameCommand { get; }
@@ -81,35 +81,35 @@ namespace Ludo
         {
             EFieldColor fieldColor;
             EFieldType fieldType;
-            ELudoFigureColor figureColor;
+            EPlayerColor figureColor;
             for (int i = 0; i < 40; i++)
             {
                 if (i == 2)
                 {
                     fieldType = EFieldType.Home;
                     fieldColor = EFieldColor.FieldBlue;
-                    figureColor = ELudoFigureColor.Empty;
+                    figureColor = EPlayerColor.Empty;
                 } else if (i == 12)
                 {
                     fieldType = EFieldType.Home;
                     fieldColor = EFieldColor.FieldGreen;
-                    figureColor = ELudoFigureColor.Empty;
+                    figureColor = EPlayerColor.Empty;
                 } else if (i == 22)
                 {
                     fieldType = EFieldType.Home;
                     fieldColor = EFieldColor.FieldYellow;
-                    figureColor = ELudoFigureColor.Empty;
+                    figureColor = EPlayerColor.Empty;
                 } else if (i == 32)
                 {
                     fieldType = EFieldType.Home;
                     fieldColor = EFieldColor.FieldRed;
-                    figureColor = ELudoFigureColor.Empty;
+                    figureColor = EPlayerColor.Empty;
                 }
                 else
                 {
                     fieldType = EFieldType.Basic;
                     fieldColor = EFieldColor.FieldBasic;
-                    figureColor = ELudoFigureColor.Empty;
+                    figureColor = EPlayerColor.Empty;
                 }
 
                 var cell = new CellStatusViewModel(i, fieldType, fieldColor, figureColor);
@@ -125,14 +125,14 @@ namespace Ludo
             foreach (var color in _players)
             {
                 fieldType = EFieldType.Home;
-                if (color.Equals(ELudoFigureColor.Red))
+                if (color.Equals(EPlayerColor.Red))
                 {
                     fieldColor = EFieldColor.FieldRed;
-                } else if (color.Equals(ELudoFigureColor.Blue))
+                } else if (color.Equals(EPlayerColor.Blue))
                 {
                     fieldColor = EFieldColor.FieldBlue;
                 }
-                else if (color.Equals(ELudoFigureColor.Yellow))
+                else if (color.Equals(EPlayerColor.Yellow))
                 {
                     fieldColor = EFieldColor.FieldYellow;
                 }
@@ -151,20 +151,20 @@ namespace Ludo
         {
             EFieldColor fieldColor;
             EFieldType fieldType;
-            ELudoFigureColor figureColor;
+            EPlayerColor figureColor;
             int index = 0;
             foreach (var color in _players)
             {
                 fieldType = EFieldType.Finish;
-                if (color.Equals(ELudoFigureColor.Red))
+                if (color.Equals(EPlayerColor.Red))
                 {
                     fieldColor = EFieldColor.FieldRed;
                 }
-                else if (color.Equals(ELudoFigureColor.Blue))
+                else if (color.Equals(EPlayerColor.Blue))
                 {
                     fieldColor = EFieldColor.FieldBlue;
                 }
-                else if (color.Equals(ELudoFigureColor.Yellow))
+                else if (color.Equals(EPlayerColor.Yellow))
                 {
                     fieldColor = EFieldColor.FieldYellow;
                 }
@@ -173,7 +173,7 @@ namespace Ludo
                     fieldColor = EFieldColor.FieldGreen;
                 }
 
-                figureColor = ELudoFigureColor.Empty;
+                figureColor = EPlayerColor.Empty;
 
                 var cell = new CellStatusViewModel(index, fieldType, fieldColor, figureColor);
                 _inFinishCells.Add(color, cell);

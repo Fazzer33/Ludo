@@ -312,7 +312,7 @@ namespace Ludo.Annotations
   /// Using <c>halt</c> (or <c>void</c>/<c>nothing</c>, which is the same) for the method output
   /// means that the method doesn't return normally (throws or terminates the process).<br/>
   /// Value <c>canbenull</c> is only applicable for output parameters.<br/>
-  /// You can use multiple <c>[ContractAnnotation]</c> for each FDT row, or use single attribute
+  /// You can use multiple <c>[ContractAnnotation]</c> for each FDT index, or use single attribute
   /// with rows separated by semicolon. There is no notion of order rows, all rows are checked
   /// for applicability and applied per each program state tracked by the analysis engine.<br/>
   /// </syntax>

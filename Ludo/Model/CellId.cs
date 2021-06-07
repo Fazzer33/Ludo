@@ -2,41 +2,25 @@
 {
     public class CellId
     {
-        private int _row;
-        public int Row
+        private int _index;
+        public int Index
         {
-            get { return _row; }
+            get { return _index; }
         }
 
-        private int _col;
-        public int Col
+        private CellId(int index)
         {
-            get { return _col; }
+            _index = index;
+        }
+        public static CellId Create(int index)
+        {
+            return new CellId(index);
         }
 
-        private CellId(int row, int col)
-        {
-            _row = row;
-            _col = col;
-        }
-        public static CellId Create(int row, int col)
-        {
-            return new CellId(row, col);
-        }
-
-        public override bool Equals(object other)
-        {
-            var otherCasted = other as CellId;
-            if (otherCasted == null)
-            {
-                return false;
-            }
-            return otherCasted.Row == this.Row && otherCasted.Col == this.Col;
-        }
 
         public override int GetHashCode()
         {
-            return ("" + Row + Col).GetHashCode(); // Create a string and re-use the HashCode
+            return ("" + Index).GetHashCode(); // Create a string and re-use the HashCode
         }
     }
 }

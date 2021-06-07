@@ -94,7 +94,6 @@
     </Compile>
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\FieldTypeToColorConverter.cs" />
-    <Compile Include="Views\LudoFigureToImageConverter.cs" />
     <Compile Include="Views\LudoGridCell.xaml.cs">
       <DependentUpon>LudoGridCell.xaml</DependentUpon>
     </Compile>
