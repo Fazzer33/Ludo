@@ -12,6 +12,9 @@ namespace Ludo
     {
         private readonly IGameLogic _gameLogic;
         private readonly IDice _dice;
+        private CellStatusViewModel _selectedCell;
+
+        private bool _isCellSelected = false;
 
         private EPlayerColor _currentPlayer;
         public EPlayerColor CurrentPlayer
@@ -43,16 +46,16 @@ namespace Ludo
             get { return _inGameCells;  }
         }
 
-        private readonly Dictionary<EPlayerColor, CellStatusViewModel> _inStartCells = new Dictionary<EPlayerColor, CellStatusViewModel>();
+        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inStartCells = new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
 
-        public Dictionary<EPlayerColor, CellStatusViewModel> InStartCells
+        public Dictionary<EPlayerColor, List<CellStatusViewModel>> InStartCells
         {
             get { return _inStartCells;  }
         }
 
-        private readonly Dictionary<EPlayerColor, CellStatusViewModel> _inFinishCells = new Dictionary<EPlayerColor, CellStatusViewModel>();
+        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inFinishCells = new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
 
-        public Dictionary<EPlayerColor, CellStatusViewModel> InFinishCells
+        public Dictionary<EPlayerColor, List<CellStatusViewModel>> InFinishCells
         {
             get { return _inFinishCells; }
         }
@@ -60,15 +63,104 @@ namespace Ludo
         private List<EPlayerColor> _players = new List<EPlayerColor>()
             {EPlayerColor.Red, EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Yellow};
 
+
+        private CellStatusViewModel fetchInGameCell(CellId identifier)
+        {
+            return InGameCells[identifier.Index];
+        }
+
+        private CellStatusViewModel fetchInStartCell(CellId identifier)
+        {
+            var cells = InStartCells[identifier.Color];
+            return cells[identifier.Index];
+        }
+
+        private CellStatusViewModel fetchInFinishCell(CellId identifier)
+        {
+            var cells = InFinishCells[identifier.Color];
+            return cells[identifier.Index];
+        }
+
+        private void Cell_CellSelected(object sender, CellId selectedCellIdentifier)
+        {
+            CellStatusViewModel cell = null;
+           
+            if (_isCellSelected)
+            {
+                if (selectedCellIdentifier.FieldType == EFieldType.Home)
+                {
+                    _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
+                }
+
+                if (selectedCellIdentifier.FieldType == EFieldType.Basic)
+                {
+                    cell = fetchInGameCell(selectedCellIdentifier);
+                    if (!cell.IsEmpty)
+                    {
+                        if (cell.Pawn.Id.Color == CurrentPlayer)
+                        {
+                            _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
+                            CurrentPlayer = _gameLogic.CurrentPlayer;
+                        }
+
+                    }
+
+                }
+
+            }
+            if (!_isCellSelected)
+            {
+                if (selectedCellIdentifier.FieldType == EFieldType.Home)
+                {
+                    cell = fetchInStartCell(selectedCellIdentifier);
+                }
+                else if (selectedCellIdentifier.FieldType == EFieldType.Basic)
+                {
+                    cell = fetchInGameCell(selectedCellIdentifier);
+                }
+                else if (selectedCellIdentifier.FieldType == EFieldType.Finish)
+                {
+                    cell = fetchInFinishCell(selectedCellIdentifier);
+                }
+                Console.WriteLine("Empty?: " +cell.IsEmpty);
+                if (cell.IsEmpty)
+                {
+                    return;
+                }
+
+                if (CurrentPlayer == cell.PlayerColor)
+                {
+                    Console.WriteLine(CurrentPlayer);
+                    Console.WriteLine("select it");
+                    _selectedCell = cell;
+                    _selectedCell.IsCellSelected = true;
+               /*     _isCellSelected = true;*/
+                    displayValidMoves(_selectedCell);
+                }
+            }
+           
+        }
+
+        private void displayValidMoves(CellStatusViewModel selectedCell)
+        {
+            var validMoves = _gameLogic.ValidMoves(_dice.Result);
+            foreach (var moveTarget in validMoves)
+            {
+                
+                if (moveTarget == selectedCell.Pawn.Id)
+                {
+
+                    fetchInGameCell(selectedCell.Identifier).IsValidMoveTarget = true;
+                }
+            }
+        }
+
         public RelayCommand RollDiceCommand { get; }
         public RelayCommand RestartGameCommand { get; }
 
         private void RollDiceCommandHandle(object obj)
         {
-            RolledNumber = _dice.Role();
-            // TODO: Choose piece, then let it move (changes current player and set current player to mainviewmodel
-            _gameLogic.MovePiece(new PawnId(EPlayerColor.Red, 1), RolledNumber);
-            CurrentPlayer = _gameLogic.CurrentPlayer;
+           RolledNumber = _dice.Role();
         }
 
         private void RestartGameCommandHandle(object obj)
@@ -79,105 +171,131 @@ namespace Ludo
 
         public void SetupInGameCells()
         {
-            EFieldColor fieldColor;
+            EPlayerColor fieldColor;
             EFieldType fieldType;
             EPlayerColor figureColor;
             for (int i = 0; i < 40; i++)
             {
                 if (i == 2)
                 {
-                    fieldType = EFieldType.Home;
-                    fieldColor = EFieldColor.FieldBlue;
+                    fieldType = EFieldType.Basic;
+                    fieldColor = EPlayerColor.Blue;
                     figureColor = EPlayerColor.Empty;
                 } else if (i == 12)
                 {
-                    fieldType = EFieldType.Home;
-                    fieldColor = EFieldColor.FieldGreen;
+                    fieldType = EFieldType.Basic;
+                    fieldColor = EPlayerColor.Green;
                     figureColor = EPlayerColor.Empty;
                 } else if (i == 22)
                 {
-                    fieldType = EFieldType.Home;
-                    fieldColor = EFieldColor.FieldYellow;
+                    fieldType = EFieldType.Basic;
+                    fieldColor = EPlayerColor.Yellow;
                     figureColor = EPlayerColor.Empty;
                 } else if (i == 32)
                 {
-                    fieldType = EFieldType.Home;
-                    fieldColor = EFieldColor.FieldRed;
+                    fieldType = EFieldType.Basic;
+                    fieldColor = EPlayerColor.Red;
                     figureColor = EPlayerColor.Empty;
                 }
                 else
                 {
                     fieldType = EFieldType.Basic;
-                    fieldColor = EFieldColor.FieldBasic;
+                    fieldColor = EPlayerColor.Empty;
                     figureColor = EPlayerColor.Empty;
                 }
 
                 var cell = new CellStatusViewModel(i, fieldType, fieldColor, figureColor);
+                cell.CellSelected += Cell_CellSelected;
                 InGameCells.Add(cell);
             }
         }
 
         public void SetupInStartCells()
         {
-            EFieldColor fieldColor;
+            EPlayerColor fieldColor;
             EFieldType fieldType;
-            int index = 0;
+            int cellIndex;
             foreach (var color in _players)
             {
-                fieldType = EFieldType.Home;
-                if (color.Equals(EPlayerColor.Red))
+                var cells = new List<CellStatusViewModel>();
+                switch (color)
                 {
-                    fieldColor = EFieldColor.FieldRed;
-                } else if (color.Equals(EPlayerColor.Blue))
-                {
-                    fieldColor = EFieldColor.FieldBlue;
+                    case EPlayerColor.Red:
+                        break;
+                    case EPlayerColor.Blue:
+                        break;
+                    case EPlayerColor.Green:
+                        break;
+                    case EPlayerColor.Yellow:
+                        break;
+                    default:
+                        break;
                 }
-                else if (color.Equals(EPlayerColor.Yellow))
+                for (int i = 0; i < 4; i++)
                 {
-                    fieldColor = EFieldColor.FieldYellow;
+                    fieldType = EFieldType.Home;
+                    if (color.Equals(EPlayerColor.Red))
+                    {
+                        fieldColor = EPlayerColor.Red;
+                    }
+                    else if (color.Equals(EPlayerColor.Blue))
+                    {
+                        fieldColor = EPlayerColor.Blue;
+                    }
+                    else if (color.Equals(EPlayerColor.Yellow))
+                    {
+                        fieldColor = EPlayerColor.Yellow;
+                    }
+                    else
+                    {
+                        fieldColor = EPlayerColor.Green;
+                    }
+
+                    var pawn = new Pawn(new PawnId(color, i));
+                    var cell = new CellStatusViewModel(i, fieldType, fieldColor, color, pawn);
+                    cell.CellSelected += Cell_CellSelected;
+                    cells.Add(cell);
                 }
-                else 
-                {
-                    fieldColor = EFieldColor.FieldGreen;
-                }
-                
-                var cell = new CellStatusViewModel(index, fieldType, fieldColor, color);
-                _inStartCells.Add(color, cell);
-                index++;
+                _inStartCells.Add(color, cells);
             }
         }
 
         public void SetupInFinishCells()
         {
-            EFieldColor fieldColor;
+            EPlayerColor fieldColor;
             EFieldType fieldType;
-            EPlayerColor figureColor;
-            int index = 0;
+            EPlayerColor playerColor;
             foreach (var color in _players)
             {
-                fieldType = EFieldType.Finish;
-                if (color.Equals(EPlayerColor.Red))
+                var cells = new List<CellStatusViewModel>();
+                for (int i = 0; i < 4; i++)
                 {
-                    fieldColor = EFieldColor.FieldRed;
-                }
-                else if (color.Equals(EPlayerColor.Blue))
-                {
-                    fieldColor = EFieldColor.FieldBlue;
-                }
-                else if (color.Equals(EPlayerColor.Yellow))
-                {
-                    fieldColor = EFieldColor.FieldYellow;
-                }
-                else
-                {
-                    fieldColor = EFieldColor.FieldGreen;
+                    fieldType = EFieldType.Finish;
+                    if (color.Equals(EPlayerColor.Red))
+                    {
+                        fieldColor = EPlayerColor.Red;
+                    }
+                    else if (color.Equals(EPlayerColor.Blue))
+                    {
+                        fieldColor = EPlayerColor.Blue;
+                    }
+                    else if (color.Equals(EPlayerColor.Yellow))
+                    {
+                        fieldColor = EPlayerColor.Yellow;
+                    }
+                    else
+                    {
+                        fieldColor = EPlayerColor.Green;
+                    }
+
+                    playerColor = EPlayerColor.Empty;
+                    var cell = new CellStatusViewModel(i, fieldType, fieldColor, playerColor);
+                    cell.CellSelected += Cell_CellSelected;
+                    cells.Add(cell);
                 }
 
-                figureColor = EPlayerColor.Empty;
-
-                var cell = new CellStatusViewModel(index, fieldType, fieldColor, figureColor);
-                _inFinishCells.Add(color, cell);
-                index++;
+                _inFinishCells.Add(color, cells);
+               
             }
         }
 

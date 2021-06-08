@@ -29,5 +29,10 @@ namespace Ludo
             DataContext = mvm;
             InitializeComponent();
         }
+
+        private void LudoGridCell_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

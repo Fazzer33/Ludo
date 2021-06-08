@@ -12,6 +12,7 @@ namespace Ludo.Model
         public CellModel(int cellIndex)
         {
             CellIndex = cellIndex;
+            PawnInCell = null;
         }
         public Pawn PawnInCell { get; set; } = null;
         public int CellIndex { get; }
@@ -22,15 +23,15 @@ namespace Ludo.Model
             switch (color)
             {
                 case EPlayerColor.Blue:
-                    return 0;
+                    return 2;
                 case EPlayerColor.Green:
-                    return 10;
+                    return 12;
                 case EPlayerColor.Red:
-                    return 20;
+                    return 32;
                 case EPlayerColor.Yellow:
-                    return 30;
+                    return 22;
                 default:
-                    return 0;
+                    return 2;
             }
         }
 

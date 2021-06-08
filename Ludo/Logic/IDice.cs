@@ -2,6 +2,7 @@
 {
     public interface IDice
     {
+        int Result { get; }
         int Role();
     }
 }

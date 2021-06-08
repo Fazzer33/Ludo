@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ludo.Annotations;
@@ -18,11 +19,11 @@ namespace Ludo
 
         public event EventHandler<CellId> CellSelected = delegate { };
 
-        private readonly EFieldColor _colorType;
+        private readonly EPlayerColor _fieldColor;
 
-        public EFieldColor ColorType
+        public EPlayerColor ColorType
         {
-            get { return _colorType; }
+            get { return _fieldColor; }
         }
 
         private readonly EFieldType _fieldType;
@@ -45,22 +46,28 @@ namespace Ludo
             }
         }
 
-        private PawnId _pawnId;
+        private Pawn _pawn;
 
-        public PawnId PawnId
+        public Pawn Pawn
         {
-            get { return _pawnId; }
+            get { return _pawn; }
             private set
             {
-                if (_pawnId != value)
+                if (_pawn != value)
                 {
-                    _pawnId = value;
-                    OnPropertyChanged(nameof(PawnId));
+                    _pawn = value;
+                    OnPropertyChanged(nameof(Pawn));
                 }
             }
         }
 
-        private bool _isCellSelected = false;
+        public bool IsEmpty
+        {
+            get { return _pawn == null;  }
+        }
+        
+
+        private bool _isCellSelected;
         public bool IsCellSelected
         {
             get { return _isCellSelected; }
@@ -88,9 +95,14 @@ namespace Ludo
             }
         }
 
-        public void SetPawn(PawnId pawn)
+        public void SetPawn(Pawn pawn)
         {
-            PawnId = pawn;
+            Pawn = pawn;
+        }
+
+        public CellId Identifier
+        {
+            get { return CellId.Create(_index, _fieldType, _playerColor); }
         }
 
         private RelayCommand _cellSelectedCommand = null;
@@ -102,7 +114,7 @@ namespace Ludo
                        (_cellSelectedCommand = new RelayCommand(
                            (x) =>
                            {
-                               CellSelected(this, CellId.Create(_index));
+                               CellSelected(this, CellId.Create(_index, _fieldType, _fieldColor));
 
                            }, // Execute
                            (x) => { return true; } // CanExecute
@@ -112,21 +124,21 @@ namespace Ludo
 
         private int _index;
 
-        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, EPlayerColor figureColor)
+        public CellStatusViewModel(int index, EFieldType fieldType, EPlayerColor fieldFieldColor, EPlayerColor figureColor)
         {
             _index = index;
             _fieldType = fieldType;
-            _colorType = fieldColor;
+            _fieldColor = fieldFieldColor;
             _playerColor = figureColor;
         }
 
-        public CellStatusViewModel(int index, EFieldType fieldType, EFieldColor fieldColor, EPlayerColor figureColor, PawnId pawnId)
+        public CellStatusViewModel(int index, EFieldType fieldType, EPlayerColor fieldFieldColor, EPlayerColor figureColor, Pawn pawn)
         {
             _index = index;
             _fieldType = fieldType;
-            _colorType = fieldColor;
+            _fieldColor = fieldFieldColor;
             _playerColor = figureColor;
-            _pawnId = pawnId;
+            _pawn = pawn;
         }
     }
 }

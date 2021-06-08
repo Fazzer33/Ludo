@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using Ludo.Model;
 
 namespace Ludo
 {
@@ -9,18 +10,18 @@ namespace Ludo
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            EFieldColor color = (EFieldColor)value;
+            EPlayerColor color = (EPlayerColor)value;
             switch (color)
             {
-                case EFieldColor.FieldBlue:
+                case EPlayerColor.Blue:
                     return new SolidColorBrush(Colors.Blue);
-                case EFieldColor.FieldRed:
+                case EPlayerColor.Red:
                     return new SolidColorBrush(Colors.Red);
-                case EFieldColor.FieldGreen:
+                case EPlayerColor.Green:
                     return new SolidColorBrush(Colors.Green);
-                case EFieldColor.FieldYellow:
+                case EPlayerColor.Yellow:
                     return new SolidColorBrush(Colors.Yellow);
-                case EFieldColor.FieldBasic:
+                case EPlayerColor.Empty:
                     return new SolidColorBrush(Colors.AntiqueWhite);
                 default:
                     throw new ArgumentException("Not supported field type.");

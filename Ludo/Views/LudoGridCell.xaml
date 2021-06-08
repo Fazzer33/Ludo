@@ -12,7 +12,25 @@
         <local:PlayerColorToImageConverter x:Key="PlayerColorToImageConverter"></local:PlayerColorToImageConverter>
     </UserControl.Resources>
     <Grid>
-        <Border CornerRadius="55" >
+        <Border>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value= "HotPink"/>
+
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding IsCellSelected}" Value="true">
+                            <Setter Property="Background" Value="HotPink"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsValidMoveTarget}" Value="true">
+                            <Setter Property="Background" Value= "DarkTurquoise"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <Grid>
             <Ellipse>
             <Ellipse.Style>
@@ -23,19 +41,15 @@
                     <Setter Property="Margin" Value="5px"></Setter>
                 </Style>
             </Ellipse.Style>
-        </Ellipse>
+            </Ellipse>
                 <Image Height="50" Width="50" Source="{Binding PlayerColor, Converter={StaticResource PlayerColorToImageConverter}}"/>
             </Grid>
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value= "HotPink"/>
-
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+           
         </Border>
+
+        <!-- Dispatch mouse click to view model-->
+        <Grid.InputBindings>
+            <MouseBinding Command="{Binding CellSelectedCommand}" MouseAction="LeftClick"/>
+        </Grid.InputBindings>
     </Grid>
 </UserControl>

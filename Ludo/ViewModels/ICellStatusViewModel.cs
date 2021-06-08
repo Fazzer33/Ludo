@@ -1,8 +1,11 @@
-﻿namespace Ludo
+﻿using System.ComponentModel;
+using Ludo.Model;
+
+namespace Ludo
 {
-    public interface ICellStatusViewModel
+    public interface ICellStatusViewModel : INotifyPropertyChanged
     {
-        EFieldColor ColorType { get; }
+        EPlayerColor ColorType { get; }
         EFieldType FieldType { get;  }
     }
 }

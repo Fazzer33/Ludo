@@ -11,16 +11,25 @@ namespace Ludo.Logic
     {
         private int _min;
         private int _max;
+        private int _result;
+
+        public int Result
+        {
+            get { return _result; }
+            set { _result = value;  }
+        }
         public Dice(int min, int max)
         {
             _min = min;
             _max = max;
-
+            _result = 0;
         }
 
         public int Role()
         {
-            return new Random().Next(_min, _max + 1);
+            var result = new Random().Next(_min, _max + 1);
+            Result = result;
+            return result;
         }
     }
 }
