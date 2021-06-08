@@ -104,8 +104,8 @@ namespace Ludo.Model
         public IReadOnlyList<PawnId> ValidMoves(int diceResult)
         {
             List<PawnId> possiblePawnsToMove = new List<PawnId>();
-
             //Add to list of valid moves all pawns that are in house, if the start cell is empty
+     
             if (diceResult == diceNumberMoveToStart && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell == null)
             {
                 _pawns[_currentPlayer].Where((pawn) => pawn.State == EPawnState.Start).ToList().ForEach((pawn) => possiblePawnsToMove.Add(pawn.Id));
@@ -152,8 +152,10 @@ namespace Ludo.Model
         {
             //Add somewhere events so the piece was moved
             var validMoves = ValidMoves(diceResult);
+
             if (validMoves.Any(x => x.Equals(pawn)))
             {
+                
                 Pawn toMove = FindPawnWithPawnId(pawn);
                 if (toMove.State == EPawnState.Start)
                 {

@@ -84,7 +84,6 @@ namespace Ludo
         private void Cell_CellSelected(object sender, CellId selectedCellIdentifier)
         {
             CellStatusViewModel cell = null;
-           
             if (_isCellSelected)
             {
                 if (selectedCellIdentifier.FieldType == EFieldType.Home)
@@ -110,6 +109,10 @@ namespace Ludo
             }
             if (!_isCellSelected)
             {
+                if (_selectedCell != null)
+                {
+                    _selectedCell.IsCellSelected = false;
+                }
                 if (selectedCellIdentifier.FieldType == EFieldType.Home)
                 {
                     cell = fetchInStartCell(selectedCellIdentifier);
@@ -134,8 +137,13 @@ namespace Ludo
                     Console.WriteLine("select it");
                     _selectedCell = cell;
                     _selectedCell.IsCellSelected = true;
-               /*     _isCellSelected = true;*/
+                    /*     _isCellSelected = true;*/
                     displayValidMoves(_selectedCell);
+
+                    _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
+                    /*Console.WriteLine(_gameLogic.ToString());*/
+                    CurrentPlayer = _gameLogic.CurrentPlayer;
+                 
                 }
             }
            
@@ -214,7 +222,6 @@ namespace Ludo
         {
             EPlayerColor fieldColor;
             EFieldType fieldType;
-            int cellIndex;
             foreach (var color in _players)
             {
                 var cells = new List<CellStatusViewModel>();
