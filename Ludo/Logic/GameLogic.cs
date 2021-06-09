@@ -101,14 +101,15 @@ namespace Ludo.Model
             return false;
         }
 
-        public IReadOnlyList<PawnId> ValidMoves(int diceResult)
+        public IReadOnlyList<Pawn> ValidMoves(int diceResult)
         {
-            List<PawnId> possiblePawnsToMove = new List<PawnId>();
+            List<Pawn> possiblePawnsToMove = new List<Pawn>();
+
             //Add to list of valid moves all pawns that are in house, if the start cell is empty
      
             if (diceResult == diceNumberMoveToStart && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell == null)
             {
-                _pawns[_currentPlayer].Where((pawn) => pawn.State == EPawnState.Start).ToList().ForEach((pawn) => possiblePawnsToMove.Add(pawn.Id));
+                _pawns[_currentPlayer].Where((pawn) => pawn.State == EPawnState.Start).ToList().ForEach((pawn) => possiblePawnsToMove.Add(pawn));
             }
 
             List<Pawn> pawnsOnBoardForCurrentPlayer = _pawns[_currentPlayer].Where((pawn) => pawn.State == EPawnState.InGame).ToList();
@@ -120,7 +121,7 @@ namespace Ludo.Model
                 int nextCellId = DetermineNextCellId(currentPosition.CellIndex, diceResult);
                 if (CheckIfPawnDidAllRound(pawn, nextCellId))
                 {
-                    possiblePawnsToMove.Add(pawn.Id);
+                    possiblePawnsToMove.Add(pawn);
                     continue;
                 }
 
@@ -130,7 +131,7 @@ namespace Ludo.Model
                 {
                     continue;
                 }
-                possiblePawnsToMove.Add(pawn.Id);
+                possiblePawnsToMove.Add(pawn);
             }
             return possiblePawnsToMove;
         }
@@ -151,12 +152,15 @@ namespace Ludo.Model
         public void MovePiece(PawnId pawn, int diceResult)
         {
             //Add somewhere events so the piece was moved
-            var validMoves = ValidMoves(diceResult);
 
-            if (validMoves.Any(x => x.Equals(pawn)))
+            Console.WriteLine(pawn);
+            var validMoves = ValidMoves(diceResult);
+            if (validMoves.Any(x => x.Id.Equals(pawn)))
             {
-                
+
                 Pawn toMove = FindPawnWithPawnId(pawn);
+                CellStatusChangedEvent(this, new CellStatusChangedEventArgs(toMove.Id, toMove.State, toMove.Cell?.CellIndex));
+
                 if (toMove.State == EPawnState.Start)
                 {
                     toMove.MoveToStart(_cells[CellModel.GetStartCellIndexForPlayer(toMove.Id.Color)]);
@@ -174,6 +178,8 @@ namespace Ludo.Model
                         toMove.MovePawn(_cells[newCellIndex]);
                     }
                 }
+
+                CellStatusChangedEvent(this, new CellStatusChangedEventArgs(toMove.Id, toMove.State, toMove.Cell?.CellIndex));
 
                 CheckIfFinished();
             }

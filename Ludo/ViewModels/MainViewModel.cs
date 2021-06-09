@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ludo.Annotations;
+using Ludo.Events;
 using Ludo.Logic;
 using Ludo.Model;
 
@@ -17,9 +18,10 @@ namespace Ludo
         private bool _isCellSelected = false;
 
         private EPlayerColor _currentPlayer;
+
         public EPlayerColor CurrentPlayer
         {
-            get { return _currentPlayer;  }
+            get { return _currentPlayer; }
             set
             {
                 _currentPlayer = value;
@@ -43,17 +45,19 @@ namespace Ludo
 
         public List<CellStatusViewModel> InGameCells
         {
-            get { return _inGameCells;  }
+            get { return _inGameCells; }
         }
 
-        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inStartCells = new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
+        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inStartCells =
+            new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
 
         public Dictionary<EPlayerColor, List<CellStatusViewModel>> InStartCells
         {
-            get { return _inStartCells;  }
+            get { return _inStartCells; }
         }
 
-        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inFinishCells = new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
+        private readonly Dictionary<EPlayerColor, List<CellStatusViewModel>> _inFinishCells =
+            new Dictionary<EPlayerColor, List<CellStatusViewModel>>();
 
         public Dictionary<EPlayerColor, List<CellStatusViewModel>> InFinishCells
         {
@@ -81,94 +85,122 @@ namespace Ludo
             return cells[identifier.Index];
         }
 
+        private void Cell_CellStatusChanged(object sender, CellStatusChangedEventArgs eventArgs)
+        {
+            //HANDLE pieces swaping 
+        }
+
+
         private void Cell_CellSelected(object sender, CellId selectedCellIdentifier)
         {
+
+
+
             CellStatusViewModel cell = null;
             if (_isCellSelected)
             {
                 if (selectedCellIdentifier.FieldType == EFieldType.Home)
                 {
-                    _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
+
+                    cell = fetchInStartCell(selectedCellIdentifier);
+                    if (cell.IsCellSelected == true)
+                    {
+
+                        var pawnsCanBeMoved = _gameLogic.ValidMoves(RolledNumber);
+                        foreach (var pawn in pawnsCanBeMoved)
+                        {
+                            if (pawn.State == EPawnState.Start)
+                            {
+                                fetchInStartCell(CellId.Create(pawn.Id.Id, EFieldType.Home, pawn.Id.Color)).IsCellSelected =
+                                    false;
+
+                            }
+                            else if (pawn.State == EPawnState.InGame)
+                            {
+                                fetchInGameCell(CellId.Create(pawn.Cell.CellIndex, EFieldType.Basic, pawn.Id.Color))
+                                        .IsCellSelected =
+                                    false;
+                            }
+
+                        }
+
+
+                        _gameLogic.MovePiece(cell.Pawn, RolledNumber);
+                        _isCellSelected = false;
+                        CurrentPlayer = _gameLogic.CurrentPlayer;
+
+                    }
                 }
 
                 if (selectedCellIdentifier.FieldType == EFieldType.Basic)
                 {
                     cell = fetchInGameCell(selectedCellIdentifier);
-                    if (!cell.IsEmpty)
+                    if (cell.IsCellSelected == true)
                     {
-                        if (cell.Pawn.Id.Color == CurrentPlayer)
+
+                        var pawnsCanBeMoved = _gameLogic.ValidMoves(RolledNumber);
+                        foreach (var pawn in pawnsCanBeMoved)
                         {
-                            _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
-                            CurrentPlayer = _gameLogic.CurrentPlayer;
+                            if (pawn.State == EPawnState.Start)
+                            {
+                                fetchInStartCell(CellId.Create(pawn.Id.Id, EFieldType.Home, pawn.Id.Color)).IsCellSelected =
+                                    false;
+
+                            }
+                            else if (pawn.State == EPawnState.InGame)
+                            {
+                                fetchInGameCell(CellId.Create(pawn.Cell.CellIndex, EFieldType.Basic, pawn.Id.Color))
+                                        .IsCellSelected =
+                                    false;
+                            }
+
                         }
 
+                        _gameLogic.MovePiece(cell.Pawn, RolledNumber);
+                        _isCellSelected = false;
+                        CurrentPlayer = _gameLogic.CurrentPlayer;
                     }
 
                 }
 
-            }
-            if (!_isCellSelected)
-            {
-                if (_selectedCell != null)
-                {
-                    _selectedCell.IsCellSelected = false;
-                }
-                if (selectedCellIdentifier.FieldType == EFieldType.Home)
-                {
-                    cell = fetchInStartCell(selectedCellIdentifier);
-                }
-                else if (selectedCellIdentifier.FieldType == EFieldType.Basic)
-                {
-                    cell = fetchInGameCell(selectedCellIdentifier);
-                }
-                else if (selectedCellIdentifier.FieldType == EFieldType.Finish)
-                {
-                    cell = fetchInFinishCell(selectedCellIdentifier);
-                }
-                Console.WriteLine("Empty?: " +cell.IsEmpty);
-                if (cell.IsEmpty)
-                {
-                    return;
-                }
 
-                if (CurrentPlayer == cell.PlayerColor)
-                {
-                    Console.WriteLine(CurrentPlayer);
-                    Console.WriteLine("select it");
-                    _selectedCell = cell;
-                    _selectedCell.IsCellSelected = true;
-                    /*     _isCellSelected = true;*/
-                    displayValidMoves(_selectedCell);
 
-                    _gameLogic.MovePiece(cell.Pawn.Id, _dice.Result);
-                    /*Console.WriteLine(_gameLogic.ToString());*/
-                    CurrentPlayer = _gameLogic.CurrentPlayer;
-                 
-                }
+
+
+
+
             }
-           
+
         }
 
-        private void displayValidMoves(CellStatusViewModel selectedCell)
-        {
-            var validMoves = _gameLogic.ValidMoves(_dice.Result);
-            foreach (var moveTarget in validMoves)
-            {
-                
-                if (moveTarget == selectedCell.Pawn.Id)
-                {
-
-                    fetchInGameCell(selectedCell.Identifier).IsValidMoveTarget = true;
-                }
-            }
-        }
 
         public RelayCommand RollDiceCommand { get; }
         public RelayCommand RestartGameCommand { get; }
 
         private void RollDiceCommandHandle(object obj)
         {
-           RolledNumber = _dice.Role();
+            if (!_isCellSelected)
+            {
+                RolledNumber = _dice.Role();
+                var pawnsCanBeMoved = _gameLogic.ValidMoves(RolledNumber);
+                foreach (var pawn in pawnsCanBeMoved)
+                {
+                    if (pawn.State == EPawnState.Start)
+                    {
+                        fetchInStartCell(CellId.Create(pawn.Id.Id, EFieldType.Home, pawn.Id.Color)).IsCellSelected =
+                            true;
+
+                    }
+                    else if (pawn.State == EPawnState.InGame)
+                    {
+                        fetchInGameCell(CellId.Create(pawn.Cell.CellIndex, EFieldType.Basic, pawn.Id.Color)).IsCellSelected =
+                            true;
+                    }
+
+                    _isCellSelected = true;
+                }
+            }
+
         }
 
         private void RestartGameCommandHandle(object obj)
@@ -189,17 +221,20 @@ namespace Ludo
                     fieldType = EFieldType.Basic;
                     fieldColor = EPlayerColor.Blue;
                     figureColor = EPlayerColor.Empty;
-                } else if (i == 12)
+                }
+                else if (i == 12)
                 {
                     fieldType = EFieldType.Basic;
                     fieldColor = EPlayerColor.Green;
                     figureColor = EPlayerColor.Empty;
-                } else if (i == 22)
+                }
+                else if (i == 22)
                 {
                     fieldType = EFieldType.Basic;
                     fieldColor = EPlayerColor.Yellow;
                     figureColor = EPlayerColor.Empty;
-                } else if (i == 32)
+                }
+                else if (i == 32)
                 {
                     fieldType = EFieldType.Basic;
                     fieldColor = EPlayerColor.Red;
@@ -258,7 +293,7 @@ namespace Ludo
                         fieldColor = EPlayerColor.Green;
                     }
 
-                    var pawn = new Pawn(new PawnId(color, i));
+                    var pawn = new PawnId(color, i);
                     var cell = new CellStatusViewModel(i, fieldType, fieldColor, color, pawn);
                     cell.CellSelected += Cell_CellSelected;
                     cells.Add(cell);
@@ -302,7 +337,7 @@ namespace Ludo
                 }
 
                 _inFinishCells.Add(color, cells);
-               
+
             }
         }
 
@@ -323,6 +358,7 @@ namespace Ludo
 
             _gameLogic = gameLogic;
             _gameLogic.InitializeGame(new List<EPlayerColor>() { EPlayerColor.Red, EPlayerColor.Blue, EPlayerColor.Green, EPlayerColor.Yellow });
+            _gameLogic.CellStatusChangedEvent += Cell_CellStatusChanged;
             _currentPlayer = _gameLogic.CurrentPlayer;
             SetupCellStatusViewModels(11);
         }

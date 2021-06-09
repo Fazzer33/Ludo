@@ -46,12 +46,12 @@ namespace Ludo
             }
         }
 
-        private Pawn _pawn;
+        private PawnId _pawn;
 
-        public Pawn Pawn
+        public PawnId Pawn
         {
             get { return _pawn; }
-            private set
+            set
             {
                 if (_pawn != value)
                 {
@@ -95,7 +95,7 @@ namespace Ludo
             }
         }
 
-        public void SetPawn(Pawn pawn)
+        public void SetPawn(PawnId pawn)
         {
             Pawn = pawn;
         }
@@ -132,7 +132,7 @@ namespace Ludo
             _playerColor = figureColor;
         }
 
-        public CellStatusViewModel(int index, EFieldType fieldType, EPlayerColor fieldFieldColor, EPlayerColor figureColor, Pawn pawn)
+        public CellStatusViewModel(int index, EFieldType fieldType, EPlayerColor fieldFieldColor, EPlayerColor figureColor, PawnId pawn)
         {
             _index = index;
             _fieldType = fieldType;
