@@ -131,10 +131,10 @@ namespace Ludo
             {
                 targetCell = fetchInStartCell(eventArgs.Target);
             }
-            else if (eventArgs.NewPawn.State == EPawnState.Finished)
+            else if (eventArgs.NewPawn.State == EPawnState.Finished && eventArgs.NewPawn.Cell.CellIndex < 4)
             {
                 Console.WriteLine("in finish");
-                var cellId = CellId.Create(eventArgs.NewPawn.Id.Id, EFieldType.Finish, eventArgs.NewPawn.Id.Color);
+                var cellId = CellId.Create(eventArgs.NewPawn.Cell.CellIndex, EFieldType.Finish, eventArgs.NewPawn.Id.Color);
                 targetCell = fetchInFinishCell(cellId);
             }
             else
@@ -148,9 +148,18 @@ namespace Ludo
                 getEmptyStartCell(targetCell.Pawn.Color).SetPawn(targetCell.Pawn);
 
             }
-            sourceCell.SetPawn(null);
-            targetCell.SetPawn(eventArgs.NewPawn.Id);
 
+            // dont set pawn if they are from the same color
+            if (targetCell.Pawn != null && sourceCell.Pawn.Color == targetCell.Pawn.Color)
+            {
+                return;
+            }
+            else
+            {
+                sourceCell.SetPawn(null);
+                targetCell.SetPawn(eventArgs.NewPawn.Id);
+
+            }
         }
 
 

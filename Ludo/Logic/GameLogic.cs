@@ -52,7 +52,7 @@ namespace Ludo.Model
         {
             if (identifier != null)
             {
-                if (identifier.PawnInCell.State == EPawnState.Finished)
+                if (pawn.State == EPawnState.Finished)
                 {
                     var cell = CellId.Create(pawn.Id.Id, EFieldType.Finish, pawn.Id.Color);
                     CellStatusChangedEvent(this, new CellStatusChangedEventArgs(source, pawn, cell));
@@ -109,7 +109,12 @@ namespace Ludo.Model
         {
             int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
             int pawnCellId = pawn.Cell.CellIndex;
-            if (pawnCellId < finishCellId && nextCellIndex >= finishCellId)
+            Console.WriteLine("check if did all round");
+            Console.WriteLine(pawnCellId);
+            Console.WriteLine(finishCellId);
+            Console.WriteLine(nextCellIndex);
+            if (pawnCellId < finishCellId && nextCellIndex >= finishCellId || 
+                pawn.Id.Color == EPlayerColor.Blue && nextCellIndex < pawnCellId && nextCellIndex >= finishCellId)
             {
                 return true;
             }
@@ -118,18 +123,28 @@ namespace Ludo.Model
 
         private int GetFinishCellId(Pawn pawn, int diceResult)
         {
-            int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
-            int pawnCellId = pawn.Cell.CellIndex;
-            return pawnCellId - finishCellId + diceResult;
+            if (pawn.Id.Color == EPlayerColor.Blue && pawn.Id.Id > 1)
+            {
+                int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
+                int pawnCellId = pawn.Cell.CellIndex;
+                return pawnCellId + diceResult - NumberOfCellsInGame - finishCellId;
+            }
+            else
+            {
+                int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
+                int pawnCellId = pawn.Cell.CellIndex;
+                return pawnCellId - finishCellId + diceResult;
+            }
+          
         }
 
         public IReadOnlyList<Pawn> ValidMoves(int diceResult)
         {
             List<Pawn> possiblePawnsToMove = new List<Pawn>();
 
-            //Add to list of valid moves all pawns that are in house, if the start cell is empty
-     
-            if (diceResult == diceNumberMoveToStart && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell == null)
+            //Add to list of valid moves all pawns that are in house, if the start cell is empty or from another color
+            if (diceResult == diceNumberMoveToStart && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell == null 
+                || diceResult == diceNumberMoveToStart && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell != null && _cells[CellModel.GetStartCellIndexForPlayer(_currentPlayer)].PawnInCell.Id.Color != _currentPlayer)
             {
                 _pawns[_currentPlayer].Where((pawn) => pawn.State == EPawnState.Start).ToList().ForEach((pawn) => possiblePawnsToMove.Add(pawn));
             }
@@ -188,6 +203,10 @@ namespace Ludo.Model
 
                 if (toMove.State == EPawnState.Start)
                 {
+                    if (_cells[CellModel.GetStartCellIndexForPlayer(toMove.Id.Color)].PawnInCell != null)
+                    {
+                        _cells[CellModel.GetStartCellIndexForPlayer(toMove.Id.Color)].PawnInCell.MoveToHouse();
+                    }
                     toMove.MoveToStart(_cells[CellModel.GetStartCellIndexForPlayer(toMove.Id.Color)]);
                 }
                 else
@@ -197,10 +216,12 @@ namespace Ludo.Model
                     {
                         var finishPawn = new Pawn(pawn);
                         var cell = new CellModel(GetFinishCellId(toMove, diceResult));
+                        finishPawn.Cell = cell;
                         toMove.MoveToFinish();
                         toMove = finishPawn;
                         toMove.State = EPawnState.Finished;
                         toMove.Cell = cell;
+                        toMove.Cell.PawnInCell = finishPawn;
 
                     }
                     else
