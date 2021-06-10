@@ -50,8 +50,19 @@ namespace Ludo.Model
         }
         public void SetPiece(CellModel identifier, Pawn pawn, CellId source)
         {
-            _cells[identifier.CellIndex].SetPiece(pawn);
-            CellStatusChangedEvent(this, new CellStatusChangedEventArgs(source, pawn, identifier.Identifier));
+            if (identifier != null)
+            {
+                if (identifier.PawnInCell.State == EPawnState.Finished)
+                {
+                    var cell = CellId.Create(pawn.Id.Id, EFieldType.Finish, pawn.Id.Color);
+                    CellStatusChangedEvent(this, new CellStatusChangedEventArgs(source, pawn, cell));
+                }
+                else
+                {
+                    _cells[identifier.CellIndex].SetPiece(pawn);
+                    CellStatusChangedEvent(this, new CellStatusChangedEventArgs(source, pawn, identifier.Identifier));
+                }
+            }
         }
 
 
@@ -103,6 +114,13 @@ namespace Ludo.Model
                 return true;
             }
             return false;
+        }
+
+        private int GetFinishCellId(Pawn pawn, int diceResult)
+        {
+            int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
+            int pawnCellId = pawn.Cell.CellIndex;
+            return pawnCellId - finishCellId + diceResult;
         }
 
         public IReadOnlyList<Pawn> ValidMoves(int diceResult)
@@ -163,6 +181,9 @@ namespace Ludo.Model
                 Console.WriteLine("source:");
                 Console.WriteLine(source.FieldType);
                 Console.WriteLine(source.Index);
+                Console.WriteLine(pawn.Color);
+                Console.WriteLine(pawn.Id);
+                Console.WriteLine("--------------");
 
 
                 if (toMove.State == EPawnState.Start)
@@ -174,7 +195,13 @@ namespace Ludo.Model
                     int newCellIndex = DetermineNextCellId(toMove.Cell.CellIndex, diceResult);
                     if (CheckIfPawnDidAllRound(toMove, newCellIndex))
                     {
+                        var finishPawn = new Pawn(pawn);
+                        var cell = new CellModel(GetFinishCellId(toMove, diceResult));
                         toMove.MoveToFinish();
+                        toMove = finishPawn;
+                        toMove.State = EPawnState.Finished;
+                        toMove.Cell = cell;
+
                     }
                     else
                     {
@@ -185,6 +212,9 @@ namespace Ludo.Model
                 Console.WriteLine("target :");
                 Console.WriteLine(toMove.Cell);
                 Console.WriteLine(toMove.State);
+                Console.WriteLine(toMove.Id.Color);
+                Console.WriteLine(toMove.Id.Id);
+                Console.WriteLine("--------------");
                 SetPiece(toMove.Cell, toMove, source);
 
                 CheckIfFinished();

@@ -85,36 +85,71 @@ namespace Ludo
             return cells[identifier.Index];
         }
 
+        private CellStatusViewModel getEmptyStartCell(EPlayerColor color)
+        {
+            foreach (var cell in InStartCells[color])
+            {
+                if (cell.Pawn == null)
+                {
+                    return cell;
+                }
+            }
+            return null;
+        }
+
         private void Cell_CellStatusChanged(object sender, CellStatusChangedEventArgs eventArgs)
         {
-            Console.WriteLine(eventArgs.NewPawn.State);
-            Console.WriteLine(eventArgs.Source.FieldType);
+         
             var source = eventArgs.Source;
-            Console.WriteLine(source);
+
+            CellStatusViewModel sourceCell;
+
             // handle source
             if (source.FieldType == EFieldType.Home)
             {
-                fetchInStartCell(source).SetPawn(null);
+                sourceCell = fetchInStartCell(source);
             } else if (source.FieldType == EFieldType.Basic)
             {
-                fetchInGameCell(source).SetPawn(null);
+                sourceCell = fetchInGameCell(source);
             } else if (source.FieldType == EFieldType.Finish)
             {
-                fetchInGameCell(source).SetPawn(null);
+                sourceCell = fetchInGameCell(source);
             }
+            else
+            {
+                sourceCell = null;
+            }
+
+
+            CellStatusViewModel targetCell;
 
             // handle target
             if (eventArgs.NewPawn.State == EPawnState.InGame)
             {
-                fetchInGameCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+                targetCell = fetchInGameCell(eventArgs.Target);
             } else if (eventArgs.NewPawn.State == EPawnState.Start)
             {
-                fetchInStartCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+                targetCell = fetchInStartCell(eventArgs.Target);
             }
             else if (eventArgs.NewPawn.State == EPawnState.Finished)
             {
-                fetchInFinishCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+                Console.WriteLine("in finish");
+                var cellId = CellId.Create(eventArgs.NewPawn.Id.Id, EFieldType.Finish, eventArgs.NewPawn.Id.Color);
+                targetCell = fetchInFinishCell(cellId);
             }
+            else
+            {
+                targetCell = null;
+            }
+
+            // check if other player pawn was captured
+            if (targetCell.Pawn != null && sourceCell.Pawn.Color != targetCell.Pawn.Color)
+            {
+                getEmptyStartCell(targetCell.Pawn.Color).SetPawn(targetCell.Pawn);
+
+            }
+            sourceCell.SetPawn(null);
+            targetCell.SetPawn(eventArgs.NewPawn.Id);
 
         }
 
@@ -266,6 +301,8 @@ namespace Ludo
 
                 var cell = new CellStatusViewModel(i, fieldType, fieldColor, figureColor);
                 cell.CellSelected += Cell_CellSelected;
+
+               
                 InGameCells.Add(cell);
             }
         }
