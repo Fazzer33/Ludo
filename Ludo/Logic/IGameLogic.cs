@@ -10,7 +10,7 @@ namespace Ludo.Model
     public interface IGameLogic
     {
         
-        void MovePiece(PawnId pawn, int diceResult);
+        void MovePiece(CellId cell, PawnId pawn, int diceResult);
         
         IReadOnlyList<Pawn> ValidMoves(int diceResult);
 

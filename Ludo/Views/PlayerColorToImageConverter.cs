@@ -10,8 +10,8 @@ namespace Ludo
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            EPlayerColor playerColor = (EPlayerColor)value;
-            switch (playerColor)
+            EPlayerColor color = (EPlayerColor)value;
+            switch (color)
             {
                 case EPlayerColor.Blue:
                     return new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "Figures/blue.png",

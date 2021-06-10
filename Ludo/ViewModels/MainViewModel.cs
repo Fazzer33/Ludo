@@ -87,15 +87,40 @@ namespace Ludo
 
         private void Cell_CellStatusChanged(object sender, CellStatusChangedEventArgs eventArgs)
         {
-            //HANDLE pieces swaping 
+            Console.WriteLine(eventArgs.NewPawn.State);
+            Console.WriteLine(eventArgs.Source.FieldType);
+            var source = eventArgs.Source;
+            Console.WriteLine(source);
+            // handle source
+            if (source.FieldType == EFieldType.Home)
+            {
+                fetchInStartCell(source).SetPawn(null);
+            } else if (source.FieldType == EFieldType.Basic)
+            {
+                fetchInGameCell(source).SetPawn(null);
+            } else if (source.FieldType == EFieldType.Finish)
+            {
+                fetchInGameCell(source).SetPawn(null);
+            }
+
+            // handle target
+            if (eventArgs.NewPawn.State == EPawnState.InGame)
+            {
+                fetchInGameCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+            } else if (eventArgs.NewPawn.State == EPawnState.Start)
+            {
+                fetchInStartCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+            }
+            else if (eventArgs.NewPawn.State == EPawnState.Finished)
+            {
+                fetchInFinishCell(eventArgs.Target).SetPawn(eventArgs.NewPawn.Id);
+            }
+
         }
 
 
         private void Cell_CellSelected(object sender, CellId selectedCellIdentifier)
         {
-
-
-
             CellStatusViewModel cell = null;
             if (_isCellSelected)
             {
@@ -124,8 +149,7 @@ namespace Ludo
 
                         }
 
-
-                        _gameLogic.MovePiece(cell.Pawn, RolledNumber);
+                        _gameLogic.MovePiece(cell.Identifier, cell.Pawn, RolledNumber);
                         _isCellSelected = false;
                         CurrentPlayer = _gameLogic.CurrentPlayer;
 
@@ -156,19 +180,12 @@ namespace Ludo
 
                         }
 
-                        _gameLogic.MovePiece(cell.Pawn, RolledNumber);
+                        _gameLogic.MovePiece(cell.Identifier, cell.Pawn, RolledNumber);
                         _isCellSelected = false;
                         CurrentPlayer = _gameLogic.CurrentPlayer;
                     }
 
                 }
-
-
-
-
-
-
-
             }
 
         }

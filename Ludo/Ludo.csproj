@@ -78,6 +78,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Views\NumberToDiceImageConverter.cs" />
+    <Compile Include="Views\PawnToImageConverter.cs" />
     <Compile Include="Views\PlayerColorToImageConverter.cs" />
     <Page Include="Views\LudoGridCell.xaml">
       <SubType>Designer</SubType>

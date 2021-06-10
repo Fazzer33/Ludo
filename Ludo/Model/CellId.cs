@@ -30,6 +30,19 @@ namespace Ludo
             _fieldType = fieldType;
             _color = color;
         }
+
+        private CellId(int index)
+        {
+            _index = index;
+            _fieldType = EFieldType.Basic;
+            _color = EPlayerColor.Empty;
+        }
+
+        public static CellId Create(int index)
+        {
+            return new CellId(index);
+        }
+
         public static CellId Create(int index, EFieldType fieldType, EPlayerColor color)
         {
             return new CellId(index, fieldType, color);

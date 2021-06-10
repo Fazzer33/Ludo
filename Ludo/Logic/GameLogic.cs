@@ -44,10 +44,14 @@ namespace Ludo.Model
 
         private void setNextPlayer()
         {
-            Console.WriteLine("in next player");
             int index = _playersInGame.IndexOf(_currentPlayer);
             Console.WriteLine("Logic player: " +_playersInGame[(index + 1) % _playersInGame.Count]);
             _currentPlayer = _playersInGame[(index + 1) % _playersInGame.Count];
+        }
+        public void SetPiece(CellModel identifier, Pawn pawn, CellId source)
+        {
+            _cells[identifier.CellIndex].SetPiece(pawn);
+            CellStatusChangedEvent(this, new CellStatusChangedEventArgs(source, pawn, identifier.Identifier));
         }
 
 
@@ -149,17 +153,17 @@ namespace Ludo.Model
         }
 
 
-        public void MovePiece(PawnId pawn, int diceResult)
+        public void MovePiece(CellId source, PawnId pawn, int diceResult)
         {
-            //Add somewhere events so the piece was moved
-
             Console.WriteLine(pawn);
             var validMoves = ValidMoves(diceResult);
             if (validMoves.Any(x => x.Id.Equals(pawn)))
             {
-
                 Pawn toMove = FindPawnWithPawnId(pawn);
-                CellStatusChangedEvent(this, new CellStatusChangedEventArgs(toMove.Id, toMove.State, toMove.Cell?.CellIndex));
+                Console.WriteLine("source:");
+                Console.WriteLine(source.FieldType);
+                Console.WriteLine(source.Index);
+
 
                 if (toMove.State == EPawnState.Start)
                 {
@@ -178,8 +182,10 @@ namespace Ludo.Model
                         toMove.MovePawn(_cells[newCellIndex]);
                     }
                 }
-
-                CellStatusChangedEvent(this, new CellStatusChangedEventArgs(toMove.Id, toMove.State, toMove.Cell?.CellIndex));
+                Console.WriteLine("target :");
+                Console.WriteLine(toMove.Cell);
+                Console.WriteLine(toMove.State);
+                SetPiece(toMove.Cell, toMove, source);
 
                 CheckIfFinished();
             }

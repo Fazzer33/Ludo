@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +14,14 @@ namespace Ludo.Model
         {
             CellIndex = cellIndex;
             PawnInCell = null;
+    
         }
         public Pawn PawnInCell { get; set; } = null;
         public int CellIndex { get; }
-        
+
+        public EPlayerColor PlayerColor { get; set; }
+
+        public EFieldType FieldType { get; set; }
 
         public static int GetStartCellIndexForPlayer(EPlayerColor color)
         {
@@ -35,7 +40,16 @@ namespace Ludo.Model
             }
         }
 
-     
+        public void SetPiece(Pawn pawn)
+        {
+            PawnInCell = pawn;
+        }
+
+        public CellId Identifier
+        {
+            get { return CellId.Create(CellIndex);  }
+        }
+
 
         public override string ToString() {
             return "CELL ID: " + CellIndex;

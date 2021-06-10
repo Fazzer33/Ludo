@@ -1,26 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ludo.Model;
 
 namespace Ludo.Events
 {
     public class CellStatusChangedEventArgs : EventArgs
     {
-        public CellStatusChangedEventArgs(PawnId id, EPawnState state, int? cell)
+        public CellStatusChangedEventArgs(CellId source, Pawn newPawn, CellId target)
         {
-            this.id = id;
-            this.state = state;
-            this.cellId = cellId;
+            NewPawn = newPawn;
+            Source = source;
+            Target = target;
 
         }
 
-        public PawnId id { get; }
-        public EPawnState state { get; }
-
-        private int? cellId { get; }
+        public Pawn NewPawn { get; }
+        public CellId Source { get; }
+        public CellId Target { get; }
 
 
     }

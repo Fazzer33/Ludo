@@ -9,7 +9,7 @@
 
     <UserControl.Resources>
         <local:FieldTypeToColorConverter x:Key="FieldTypeToColorConverter"/>
-        <local:PlayerColorToImageConverter x:Key="PlayerColorToImageConverter"></local:PlayerColorToImageConverter>
+        <local:PawnToImageConverter x:Key="PawnToImageConverter"></local:PawnToImageConverter>
     </UserControl.Resources>
     <Grid>
         <Border>
@@ -42,7 +42,7 @@
                 </Style>
             </Ellipse.Style>
             </Ellipse>
-                <Image Height="50" Width="50" Source="{Binding PlayerColor, Converter={StaticResource PlayerColorToImageConverter}}"/>
+                <Image Height="50" Width="50" Source="{Binding Pawn, Converter={StaticResource PawnToImageConverter}}"/>
             </Grid>
            
         </Border>
