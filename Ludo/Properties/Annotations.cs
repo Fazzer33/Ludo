@@ -75,7 +75,8 @@ namespace Ludo.Annotations
   /// {
   ///   foreach (var book in books) {
   ///     if (book != null) // Warning: Expression is always true
-  ///      Console.WriteLine(book.ToUpper());
+  ///
+  /// teLine(book.ToUpper());
   ///   }
   /// }
   /// </code></example>

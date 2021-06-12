@@ -133,7 +133,6 @@ namespace Ludo
             }
             else if (eventArgs.NewPawn.State == EPawnState.Finished && eventArgs.NewPawn.Cell.CellIndex < 4)
             {
-                Console.WriteLine("in finish");
                 var cellId = CellId.Create(eventArgs.NewPawn.Cell.CellIndex, EFieldType.Finish, eventArgs.NewPawn.Id.Color);
                 targetCell = fetchInFinishCell(cellId);
             }

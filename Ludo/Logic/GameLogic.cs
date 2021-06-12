@@ -45,7 +45,6 @@ namespace Ludo.Model
         private void setNextPlayer()
         {
             int index = _playersInGame.IndexOf(_currentPlayer);
-            Console.WriteLine("Logic player: " +_playersInGame[(index + 1) % _playersInGame.Count]);
             _currentPlayer = _playersInGame[(index + 1) % _playersInGame.Count];
         }
         public void SetPiece(CellModel identifier, Pawn pawn, CellId source)
@@ -94,8 +93,6 @@ namespace Ludo.Model
         {
             _playersInGame = players;
             _currentPlayer = players[0];
-            Console.WriteLine("Current player: "+_currentPlayer);
-
             InitializePawns();
             InitializeCells();
         }
@@ -109,10 +106,6 @@ namespace Ludo.Model
         {
             int finishCellId = CellModel.GetStartCellIndexForPlayer(pawn.Id.Color);
             int pawnCellId = pawn.Cell.CellIndex;
-            Console.WriteLine("check if did all round");
-            Console.WriteLine(pawnCellId);
-            Console.WriteLine(finishCellId);
-            Console.WriteLine(nextCellIndex);
             if (pawnCellId < finishCellId && nextCellIndex >= finishCellId || 
                 pawn.Id.Color == EPlayerColor.Blue && nextCellIndex < pawnCellId && nextCellIndex >= finishCellId)
             {
@@ -188,18 +181,10 @@ namespace Ludo.Model
 
         public void MovePiece(CellId source, PawnId pawn, int diceResult)
         {
-            Console.WriteLine(pawn);
             var validMoves = ValidMoves(diceResult);
             if (validMoves.Any(x => x.Id.Equals(pawn)))
             {
                 Pawn toMove = FindPawnWithPawnId(pawn);
-                Console.WriteLine("source:");
-                Console.WriteLine(source.FieldType);
-                Console.WriteLine(source.Index);
-                Console.WriteLine(pawn.Color);
-                Console.WriteLine(pawn.Id);
-                Console.WriteLine("--------------");
-
 
                 if (toMove.State == EPawnState.Start)
                 {
@@ -230,12 +215,6 @@ namespace Ludo.Model
                         toMove.MovePawn(_cells[newCellIndex]);
                     }
                 }
-                Console.WriteLine("target :");
-                Console.WriteLine(toMove.Cell);
-                Console.WriteLine(toMove.State);
-                Console.WriteLine(toMove.Id.Color);
-                Console.WriteLine(toMove.Id.Id);
-                Console.WriteLine("--------------");
                 SetPiece(toMove.Cell, toMove, source);
 
                 CheckIfFinished();
